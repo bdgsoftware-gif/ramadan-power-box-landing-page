@@ -1,7 +1,7 @@
 export const transformationChallengeData = {
   badge: "কক্সবাজার রিওয়ার্ড চ্যালেঞ্জ",
   title: "Ramadan Transformation Challenge",
-
+  shortDes: "বিজয়ী নির্বাচন করা হবে “রূপান্তরের ৩০ দিন” ট্র্যাকার ভেরিফিকেশন, কল কনফার্মেশন ও প্রয়োজন হলে ভিডিও যাচাইয়ের মাধ্যমে।",
   description:
     "যারা “রমজানের ৩০ দিন” ট্র্যাকার সবচেয়ে নিয়মিতভাবে অনুসরণ করে সবচেয়ে বেশি উন্নতি করবেন –",
 
@@ -21,10 +21,15 @@ export const transformationChallengeData = {
   deadline: {
     title: "Tracker Submission Deadline",
     description:
-      "রমজান শেষে ৭ দিনের Final Tracking সম্পন্ন করে আপনার ট্র্যাকার\n৩০ মার্চ ২০২৬ এর মধ্যে জমা দিতে হবে।",
+      "ট্র্যাকার জমা দেওয়ার শেষ সময়: ",
+    timeEnd: "৩০ মার্চ, ২০২৬",
     notes: [
       "Submission instruction বক্সের ভিতরের কার্ডে দেওয়া থাকবে",
       "Terms & Verification Apply.",
     ],
+    cta: {
+      label: "আমার বক্স কনফার্ম করুন",
+      scrollTo: "order-section",
+    },
   },
 };

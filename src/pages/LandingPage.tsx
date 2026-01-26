@@ -8,6 +8,9 @@ import PremiumDatesSection from "../components/sections/PremiumDatesSection";
 import RealityCheckSection from "../components/sections/RealityCheckSection";
 import TransformationChallengeSection from "../components/sections/TransformationChallengeSection";
 import OrderFormSection from "../components/sections/OrderFormSection";
+import CertificationSection from "../components/sections/CertificationSection";
+import PriceBreakdownSection from "../components/sections/PriceBreakdownSection";
+import FreeBonusScrollSection from "../components/sections/FreeBonusScrollSection";
 // import HowItWorksSection from "../components/sections/HowItWorksSection";
 // import TrustSection from "../components/sections/TrustSection";
 // import PricingSection from "../components/sections/PricingSection";
@@ -19,11 +22,14 @@ export default function LandingPage() {
     <PageWrapper>
       <TopCountdown />
       <HeroSection />
+      <CertificationSection />
       {/* <BenefitsSection /> */}
       <ProductDetailsSection />
       <PremiumDatesSection />
       <RealityCheckSection />
       <TransformationChallengeSection />
+      <FreeBonusScrollSection />
+      <PriceBreakdownSection />
       <OrderFormSection />
       {/*   <HowItWorksSection />
       <TrustSection />
