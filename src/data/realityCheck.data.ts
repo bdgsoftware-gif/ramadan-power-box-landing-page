@@ -1,5 +1,5 @@
 export const realityCheckData = {
-  title: "রমজান শুরু হলেই বাস্তবতা কী দাঁড়ায়?",
+  title: "রমজান শুরু হলেই বাস্তবতা কী দাঁড়ায়?",
 
   problems: [
     "সেহরি ঠিক না হলে সারাদিন দুর্বল লাগে",
@@ -15,7 +15,7 @@ export const realityCheckData = {
   },
 
   solutionBanner: {
-    textTop: "এই সমস্যাগুলোর সমাধান এক জায়গাতেই দেওয়া হয়েছে",
+    textTop: "এই সমস্যাগুলোর সমাধান একসাথেই দিতে তৈরি হয়েছে",
     highlight: "Bionic Ramadan Power Box",
   },
 };

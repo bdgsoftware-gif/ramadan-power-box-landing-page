@@ -12,6 +12,8 @@ export default {
       fontFamily: {
         inter: ["Inter", ...defaultTheme.fontFamily.sans],
         bengali: ['"Noto Sans Bengali"', ...defaultTheme.fontFamily.sans],
+        anekBangla: ['"Anek Bangla"', ...defaultTheme.fontFamily.sans],
+        ebGaramond: ['"EB Garamond"', ...defaultTheme.fontFamily.serif],
       },
       colors: {
         brand: {
@@ -19,9 +21,10 @@ export default {
           accent: "#F59E0B", // warm amber (Ramadan, CTA)
         },
         text: {
-          primary: "#0F172A", // main text
+          primary: "#1F2A24", // main text
           secondary: "#475569", // supporting text
           inverse: "#FFFFFF", // text on dark/CTA
+          golden: "#FFD567",
         },
         surface: {
           base: "#FFFFFF", // page background
@@ -30,10 +33,11 @@ export default {
         },
         border: {
           subtle: "#E2E8F0",
+          accent: "#C9A14A", // hover / highlight
         },
         button: {
           primary: "#F59E0B", // CTA
-          accent: "#FBBF24", // hover / highlight
+          accent: "#D08700", // hover / highlight
         },
         bg: {
           primary: "#FFFFFF",

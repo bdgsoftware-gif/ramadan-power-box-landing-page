@@ -28,22 +28,30 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <Section className=" bg-gradient-to-b from-[#FFFCF7] to-[#FFFAF1] min-h-[80dvh]">
-      <Container className="relative z-10 max-w-8xl mx-auto">
+    <Section className="relative bg-gradient-to-b from-[#FFFCF7] to-[#FFFAF1] min-h-[80dvh].">
+      {/* FULL BACKGROUND Pattern - Desktop only */}
+      <div className="absolute inset-0 hidden md:flex items-center justify-center pointer-events-none opacity-40 w-full">
+        <img
+          src={heroData.heroBackground}
+          alt=""
+          className="h-full w-full object-cover"
+        />
+      </div>
+      <Container className=" z-10 max-w-8xl mx-auto">
         <div
           ref={sectionRef}
           className="relative flex items-start justify-center min-h-[80dvh]"
         >
           {/* FULL BACKGROUND HERO IMAGE - Desktop only */}
-          <div className="absolute inset-0 hidden md:flex items-center justify-center pointer-events-none">
+          <div className="absolute inset-0 top-1/4 hidden md:flex items-center justify-center pointer-events-none">
             <img
               src={heroData.productImg}
               alt=""
-              className="h-full w-auto object-contain top-full"
+              className="h-full w-auto md:max-w-[85%] object-contain"
             />
           </div>
           {/* TEXT BLOCK - Centered */}
-          <div className="mx-auto max-w-3xl text-center">
+          <div className="mx-auto max-w-4xl text-center">
             <div
               data-hero-animate
               className="mb-4 flex justify-center items-center"
@@ -53,14 +61,14 @@ export default function HeroSection() {
 
             <h1
               data-hero-animate
-              className="text-3xl font-bold text-green-800 sm:text-4xl"
+              className="text-3xl font-bold font-ebGaramond text-green-800 sm:text-[56px]"
             >
               {heroData.title}
             </h1>
 
             <p
               data-hero-animate
-              className="mt-4 whitespace-pre-line text-text-secondary"
+              className="mt-6 font-anekBangla text-base leading-relaxed whitespace-pre-line text-text-secondary"
             >
               {heroData.description}
             </p>
@@ -68,7 +76,7 @@ export default function HeroSection() {
             <div data-hero-animate className="mt-6">
               <Button
                 onClick={handleCTA}
-                className="inline-flex items-center gap-4 px-8 py-4 rounded-full bg-[#0f5c3a] text-white font-medium animate-pulse transition-all duration-300"
+                className="inline-flex items-center gap-4 px-8 py-4 bg-gradient-to-r from-[#1B634C] via-[#0F3D2E] to-[#1B634C] text-white border-2 border-[#C9A14A] animate-pulse transition-all duration-300"
               >
                 <svg
                   className="w-8 h-8"
@@ -95,17 +103,27 @@ export default function HeroSection() {
                   <path d="M411.429 150.857c5.486 0 9.143-3.657 9.143-9.143s-3.657-9.143-9.143-9.143-9.143 3.657-9.143 9.143 3.657 9.143 9.143 9.143M277.029 396.8c-4.571 0-9.143-.914-13.714-1.829l-95.086-32.914c-21.029-7.314-32.914-31.086-25.6-52.114 7.314-21.029 31.086-32.914 52.114-25.6l95.086 32.914c21.029 7.314 32.914 31.086 25.6 52.114-5.486 16.458-21.029 27.429-38.4 27.429m-95.086-96.914c-3.657 0-7.314.914-10.057 2.743-5.486 2.743-10.057 7.314-11.886 12.8-3.657 11.886 1.829 24.686 14.629 29.257l95.086 32.914c5.486 1.829 11.886 1.829 17.371-.914s10.057-7.314 11.886-12.8c3.657-11.886-1.829-24.686-14.629-29.257l-95.086-32.914c-1.828-.915-4.571-1.829-7.314-1.829M256.914 288c-5.486 0-10.057-.914-15.543-2.743-32.914-12.8-104.229-75.886-115.2-101.486-1.829-4.571 0-10.057 4.571-11.886s10.057 0 11.886 4.571C150.857 196.571 217.6 256 248.686 268.8c8.229 2.743 18.286.914 22.857-4.571 5.486-7.314 2.743-19.2-6.4-33.829-10.057-14.629-38.4-52.114-62.171-83.2-2.743-3.657-2.743-10.057 1.829-12.8 3.657-2.743 10.057-2.743 12.8 1.829 21.943 28.343 52.114 67.657 62.171 84.114 20.114 30.171 10.971 48.457 5.486 54.857-6.401 8.229-17.372 12.8-28.344 12.8" />
                   <path d="M315.429 342.857c-4.571 0-9.143-.914-12.8-1.829l-105.143-36.571c-21.029-7.314-32-30.171-24.686-51.2l.914-1.829c2.743-6.4 6.4-12.8 12.8-17.371 3.657-2.743 8.229-2.743 11.886 0 21.029 17.371 40.229 30.171 51.2 34.743 10.971 4.571 28.343-2.743 32.914-13.714 1.829-4.571 6.4-6.4 10.971-4.571l36.571 12.8c10.057 3.657 18.286 10.971 22.857 20.114s5.486 21.029 1.829 31.086l-.914.914c-3.657 10.057-10.971 18.286-20.114 22.857-5.485 2.743-11.885 4.571-18.285 4.571M192 253.257c-.914.914-1.829 2.743-1.829 3.657l-.914 1.829c-3.657 11.886 1.829 23.771 13.714 28.343l105.143 36.571c5.486 1.829 11.886 1.829 16.457-.914 5.486-2.743 9.143-7.314 10.971-12.8l.914-1.829c1.829-5.486 1.829-11.886-.914-16.457-2.743-5.486-7.314-9.143-12.8-10.971l-29.257-10.971c-11.886 14.629-34.743 22.857-52.114 15.543-11.885-4.572-29.257-16.458-49.371-32.001m153.6 59.429" />
                 </svg>{" "}
-                <span className="text-base">{heroData.cta.label}</span>
+                <span className="text-lg font-anekBangla">
+                  {heroData.cta.label}
+                </span>
               </Button>
             </div>
 
-            <p className="mt-4 text-sm text-text-secondary">
-              *মাত্র ১০ সেকেন্ডে অর্ডার—আমাদের টিম কল করে কনফার্ম করবে
-              ইনশাআল্লাহ।
+            <p
+              data-hero-animate
+              className="mt-4 text-sm font-anekBangla leading-relaxed whitespace-pre-line text-text-secondary"
+            >
+              {heroData.promotion}
             </p>
           </div>
 
-          {/* PRICE BADGE - Removed absolute positioning, can add back if needed */}
+          {/* PRICE BADGE */}
+          <div
+            data-hero-animate
+            className="absolute left-4 top-6 hidden rotate-[-12deg] sm:block"
+          >
+            <img className="h-56" src={heroData.priceBadge.src} alt="" />
+          </div>
         </div>
       </Container>
 
