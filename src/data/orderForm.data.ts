@@ -6,5 +6,5 @@ export const orderFormData = {
     badge: "জনপ্রিয়",
   },
   shippingCost: 0,
-  cta: "আমার বক্স কনফার্ম করুন",
+  cta: "অর্ডার সাবমিট করুন",
 };
