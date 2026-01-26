@@ -25,6 +25,8 @@ export default {
           secondary: "#475569", // supporting text
           inverse: "#FFFFFF", // text on dark/CTA
           golden: "#FFD567",
+          accent: "#008000",
+          dark: "#1F2A24",
         },
         surface: {
           base: "#FFFFFF", // page background
