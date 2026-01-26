@@ -18,9 +18,7 @@ export default function Section({
     <section
       id={id}
       className={clsx(
-        // vertical spacing system
         "py-12 sm:py-20",
-        // bottom compensation (for sticky button)
         paddedBottom && "pb-28 sm:pb-20",
         className,
       )}

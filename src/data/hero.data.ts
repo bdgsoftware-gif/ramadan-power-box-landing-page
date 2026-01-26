@@ -1,6 +1,8 @@
 export const heroData = {
   brand: "/src/assets/images/bionic-logo.png",
+  heroBackground: "/src/assets/images/hero-bg-abs.png",
   title: "Ramadan Power Box",
+  productImg: "/src/assets/images/hero-bg.png",
   description:
     "রমজান কেবল একবারই আসে—এর সব প্রস্তুতি, আত্মশুদ্ধি এবং শেষ মুহূর্তের টেনশনে আপনার ইবাদাত নষ্ট না হোক।\nরমজান শক্তি • পরিবারের শান্তি • ইবাদাতে গভীর ফোকাস",
 
@@ -8,7 +10,8 @@ export const heroData = {
     label: "আমার বক্স কনফার্ম করুন",
     scrollTo: "order-section",
   },
-
+  promotion:
+    "*মাত্র ১০ সেকেন্ডে অর্ডার—আমাদের টিম কল করে কনফার্ম করবে ইনশাআল্লাহ।",
   priceBadge: {
     src: "/src/assets/images/offer-badge.png",
   },
@@ -57,5 +60,4 @@ export const heroData = {
       desktop: { top: "52%", right: "8%" },
     },
   ],
-  productImg: "/src/assets/images/hero-bg.png",
 };

@@ -14,7 +14,7 @@ export default function Button({
     <button
       {...props}
       className={clsx(
-        "inline-flex items-center justify-center rounded-lg bg-button-primary px-6 py-3 text-sm font-semibold text-text-inverse active:scale-[0.98]",
+        "inline-flex items-center justify-center rounded-full bg-button-primary px-6 py-3 text-sm font-semibold text-text-inverse active:scale-[0.98]",
         fullWidth && "w-full",
         className,
       )}

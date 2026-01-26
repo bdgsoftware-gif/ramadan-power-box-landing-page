@@ -6,7 +6,7 @@ export default function TransformationChallengeSection() {
   const data = transformationChallengeData;
 
   return (
-    <Section className="bg-bg-primary">
+    <Section className="bg-[#FFFBF4]">
       <Container>
         {/* Badge */}
         <div className="mb-4 text-center">
@@ -16,7 +16,7 @@ export default function TransformationChallengeSection() {
         </div>
 
         {/* Title */}
-        <h2 className="mb-10 text-center text-3xl font-bold text-green-800">
+        <h2 className="mb-10 text-center text-4xl font-bold font-ebGaramond text-green-800">
           {data.title}
         </h2>
 

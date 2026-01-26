@@ -32,11 +32,11 @@ export default function ProductDetailsSection() {
   }, []);
 
   return (
-    <Section>
+    <Section className="bg-white">
       <Container>
         <div ref={sectionRef}>
           {/* Title */}
-          <h2 className="mb-10 text-center text-2xl font-bold">
+          <h2 className="mb-10 text-center text-3xl font-bold font-anekBangla">
             {productDetailsData.title}
           </h2>
 
@@ -47,19 +47,21 @@ export default function ProductDetailsSection() {
                 key={index}
                 data-item
                 className={[
-                  "flex items-center gap-3 rounded-xl border border-border-subtle bg-bg-card px-5 py-4",
+                  "flex items-center gap-3 rounded-xl border border-border-accent bg-gradient-to-b from-[#FEF9C2] to-[#FEFCE8] px-5 py-4",
                   item.highlight
-                    ? "border-2 border-brand-accent bg-amber-50 font-semibold"
+                    ? "border-2 border-border-accent font-semibold"
                     : "",
                 ].join(" ")}
               >
                 {/* Icon */}
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-green-100 text-green-700">
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-200 text-[#FEF9C2]">
                   ✓
                 </span>
 
                 {/* Text */}
-                <p className="text-sm">{item.text}</p>
+                <p className="text-xl font-anekBangla font-semibold">
+                  {item.text}
+                </p>
               </div>
             ))}
           </div>
@@ -67,23 +69,24 @@ export default function ProductDetailsSection() {
           {/* Pricing Box */}
           <div
             data-item
-            className="mx-auto mt-14 max-w-3xl rounded-2xl border-2 border-dashed border-green-600 px-6 py-10 text-center"
+            className="mx-auto mt-16 max-w-3xl rounded-2xl border-2 border-dashed border-green-600 px-6 py-10 text-center"
           >
-            <h3 className="text-xl font-bold">
+            <h3 className="text-3xl font-semibold font-anekBangla">
               পুরো প্যাকেজটি পাচ্ছেন মাত্র{" "}
               <span className="text-green-700">
                 {productDetailsData.pricing.price}
-              </span>
+              </span>{" "}
+              টাকায়
             </h3>
 
-            <p className="mt-4 whitespace-pre-line text-text-secondary">
+            <p className="mt-4 whitespace-pre-line text-text-secondary text-lg font-anekBangla">
               ✨ {productDetailsData.pricing.note}
             </p>
 
             <div data-hero-animate className="mt-6">
               <Button
                 onClick={handleCTA}
-                className="inline-flex items-center gap-4 px-8 py-4 rounded-full bg-[#0f5c3a] text-white font-medium animate-pulse transition-all duration-300"
+                className="inline-flex items-center gap-4 px-8 py-4 bg-gradient-to-r from-[#1B634C] via-[#0F3D2E] to-[#1B634C] text-white border-2 border-[#C9A14A] animate-pulse transition-all duration-300"
               >
                 <svg
                   className="w-8 h-8"
@@ -110,13 +113,12 @@ export default function ProductDetailsSection() {
                   <path d="M411.429 150.857c5.486 0 9.143-3.657 9.143-9.143s-3.657-9.143-9.143-9.143-9.143 3.657-9.143 9.143 3.657 9.143 9.143 9.143M277.029 396.8c-4.571 0-9.143-.914-13.714-1.829l-95.086-32.914c-21.029-7.314-32.914-31.086-25.6-52.114 7.314-21.029 31.086-32.914 52.114-25.6l95.086 32.914c21.029 7.314 32.914 31.086 25.6 52.114-5.486 16.458-21.029 27.429-38.4 27.429m-95.086-96.914c-3.657 0-7.314.914-10.057 2.743-5.486 2.743-10.057 7.314-11.886 12.8-3.657 11.886 1.829 24.686 14.629 29.257l95.086 32.914c5.486 1.829 11.886 1.829 17.371-.914s10.057-7.314 11.886-12.8c3.657-11.886-1.829-24.686-14.629-29.257l-95.086-32.914c-1.828-.915-4.571-1.829-7.314-1.829M256.914 288c-5.486 0-10.057-.914-15.543-2.743-32.914-12.8-104.229-75.886-115.2-101.486-1.829-4.571 0-10.057 4.571-11.886s10.057 0 11.886 4.571C150.857 196.571 217.6 256 248.686 268.8c8.229 2.743 18.286.914 22.857-4.571 5.486-7.314 2.743-19.2-6.4-33.829-10.057-14.629-38.4-52.114-62.171-83.2-2.743-3.657-2.743-10.057 1.829-12.8 3.657-2.743 10.057-2.743 12.8 1.829 21.943 28.343 52.114 67.657 62.171 84.114 20.114 30.171 10.971 48.457 5.486 54.857-6.401 8.229-17.372 12.8-28.344 12.8" />
                   <path d="M315.429 342.857c-4.571 0-9.143-.914-12.8-1.829l-105.143-36.571c-21.029-7.314-32-30.171-24.686-51.2l.914-1.829c2.743-6.4 6.4-12.8 12.8-17.371 3.657-2.743 8.229-2.743 11.886 0 21.029 17.371 40.229 30.171 51.2 34.743 10.971 4.571 28.343-2.743 32.914-13.714 1.829-4.571 6.4-6.4 10.971-4.571l36.571 12.8c10.057 3.657 18.286 10.971 22.857 20.114s5.486 21.029 1.829 31.086l-.914.914c-3.657 10.057-10.971 18.286-20.114 22.857-5.485 2.743-11.885 4.571-18.285 4.571M192 253.257c-.914.914-1.829 2.743-1.829 3.657l-.914 1.829c-3.657 11.886 1.829 23.771 13.714 28.343l105.143 36.571c5.486 1.829 11.886 1.829 16.457-.914 5.486-2.743 9.143-7.314 10.971-12.8l.914-1.829c1.829-5.486 1.829-11.886-.914-16.457-2.743-5.486-7.314-9.143-12.8-10.971l-29.257-10.971c-11.886 14.629-34.743 22.857-52.114 15.543-11.885-4.572-29.257-16.458-49.371-32.001m153.6 59.429" />
                 </svg>{" "}
-                <span className="text-base">
+                <span className="text-lg font-anekBangla">
                   {productDetailsData.pricing.cta}
                 </span>
               </Button>
             </div>
-
-            <div className="mt-4 inline-flex items-center gap-2 rounded-lg bg-green-100 px-4 py-2 text-sm text-green-800">
+            <div className="mt-4 inline-flex items-center gap-2 rounded-lg bg-[#1C750A33] px-4 py-3 text-base text-text-primary font-anekBangla">
               🛵 {productDetailsData.pricing.delivery}
             </div>
           </div>
