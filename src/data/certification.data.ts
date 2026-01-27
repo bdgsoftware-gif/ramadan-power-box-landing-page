@@ -1,6 +1,7 @@
 export const certificationData = {
   badge: "Certification",
-  title: "নির্ভরযোগ্য মান ও নিরাপদার নিশ্চয়তা",
+  title: "Quality & Safety Standards",
+  warn: "(Where applicable)",
   bottomPattern: "/src/assets/images/certification-pattern.png",
   subtitle:
     "আমাদের প্রতিটি উপাদান মান, নিরাপত্তা ও হালাল নীতিমালা অনুযায়ী যাচাই–বাছাই করা।",
