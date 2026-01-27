@@ -1,9 +1,9 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
-export default function PageWrapper({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+interface PageWrapperProps {
+  children: ReactNode;
+}
+
+export default function PageWrapper({ children }: PageWrapperProps) {
   return <main className="w-full overflow-x-hidden">{children}</main>;
 }
