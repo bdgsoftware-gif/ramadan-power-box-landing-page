@@ -16,11 +16,11 @@ export const certificationData = {
       image: "/src/assets/images/cert-halal.png",
       alt: "Halal Certified",
     },
-    {
-      id: "no-msg",
-      image: "/src/assets/images/cert-no-msg.png",
-      alt: "No MSG",
-    },
+    // {
+    //   id: "no-msg",
+    //   image: "/src/assets/images/cert-no-msg.png",
+    //   alt: "No MSG",
+    // },
     {
       id: "haccp",
       image: "/src/assets/images/cert-haccp.png",

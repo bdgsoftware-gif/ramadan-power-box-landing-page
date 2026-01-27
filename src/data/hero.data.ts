@@ -3,15 +3,16 @@ export const heroData = {
   heroBackground: "/src/assets/images/hero-bg-abs.png",
   title: "Ramadan Power Box",
   productImg: "/src/assets/images/hero-bg.png",
+  mobileHeroBg: "/src/assets/images/mobile-hero-bg.png",
   description:
-    "রমজান কেবল একবারই আসে—এর সব প্রস্তুতি, আত্মশুদ্ধি এবং শেষ মুহূর্তের টেনশনে আপনার ইবাদাত নষ্ট না হোক।\nরমজান শক্তি • পরিবারের শান্তি • ইবাদাতে গভীর ফোকাস",
+    "রমজান বছরে একবার আসে, এবার যেন দুর্বলতা, অগোছালো প্রস্তুতি আর শেষ মুহূর্তের টেনশনে আপনার ইবাদত নষ্ট না হয়।\nরমজানে শক্তি • পরিবারে শান্তি • ইবাদতে গভীর ফোকাস",
 
   cta: {
-    label: "আমার বক্স কনফার্ম করুন",
+    label: "আপনার বক্স কনফার্ম করুন",
     scrollTo: "order-section",
   },
   promotion:
-    "*মাত্র ১০ সেকেন্ডে অর্ডার—আমাদের টিম কল করে কনফার্ম করবে ইনশাআল্লাহ।",
+    "*মাত্র ১০ সেকেন্ডে অর্ডার আমাদের টিম কল করে কনফার্ম করবে ইনশাআল্লাহ।",
   priceBadge: {
     src: "/src/assets/images/offer-badge.png",
   },

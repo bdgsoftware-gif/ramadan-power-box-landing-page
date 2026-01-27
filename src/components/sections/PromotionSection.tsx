@@ -3,20 +3,20 @@ import { gsap } from "../../animations/gsap.config";
 import Section from "../layout/Section";
 import Container from "../ui/Container";
 import Button from "../ui/Button";
-import { limitedBatchData } from "../../data/limitedBatch.data";
+import { promotionData } from "../../data/promotion.data";
 
-export default function LimitedBatchSection() {
+export default function PromotionSection() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleCTA = () => {
-    const el = document.getElementById(limitedBatchData.cta.scrollTo);
+    const el = document.getElementById(promotionData.cta.scrollTo);
     el?.scrollIntoView({ behavior: "smooth" });
   };
 
   useLayoutEffect(() => {
-    // 1. Create context for scoped animation & cleanup
     const ctx = gsap.context(() => {
-      gsap.from(".animate-limited", {
+      // Targets all elements with .animate-promo class
+      gsap.from(".animate-promo", {
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top 85%",
@@ -24,47 +24,32 @@ export default function LimitedBatchSection() {
         },
         y: 30,
         opacity: 0,
-        stagger: 0.1, // Faster stagger for list items
-        duration: 0.7,
+        stagger: 0.2,
+        duration: 0.8,
         ease: "power2.out",
       });
     }, containerRef);
 
-    return () => ctx.revert(); // Cleanup on unmount
+    return () => ctx.revert();
   }, []);
 
   return (
-    <Section className="bg-gradient-to-b from-emerald-900 to-emerald-700 text-white">
-      <Container>
+    <Section className="bg-white">
+      <Container className="max-w-2xl mx-auto">
         <div
           ref={containerRef}
-          className="text-center space-y-6  max-w-3xl mx-auto"
+          className="flex flex-col md:gap-10 items-center justify-center"
         >
-          {/* Added .animate-limited to all direct children */}
-          <h2 className="animate-limited text-4xl font-medium font-ebGaramond">
-            {limitedBatchData.title}{" "}
-            <span className="text-[#FFD567">{limitedBatchData.highlight}</span>
-          </h2>
+          {/* Image */}
+          <img
+            src={promotionData.image}
+            alt="Promotion"
+            className="animate-promo max-h-[290px] rounded-xl object-contain"
+          />
 
-          <ul className="space-y-3 text-xl font-anekBangla text-left">
-            {limitedBatchData.points.map((p, i) => (
-              <li key={i} className="animate-limited">
-                • {p}
-              </li>
-            ))}
-          </ul>
-
-          <div className="animate-limited text-[#FFD567] font-medium text-3xl font-ebGaramond">
-            ⚠ {limitedBatchData.deadline.label}:{" "}
-            {limitedBatchData.deadline.date}
-          </div>
-
-          <p className="animate-limited text-lg underline font-anekBangla opacity-80">
-            {limitedBatchData.deadline.note}
-          </p>
-
-          <div className="mt-6 animate-limited">
-            <Button onClick={handleCTA} variant="primary">
+          {/* Button Wrapper */}
+          <div className="animate-promo mt-6 md:mt-0">
+            <Button onClick={handleCTA} variant="premium">
               <svg
                 className="w-6 h-6 md:w-8 md:h-8"
                 xmlns="http://www.w3.org/2000/svg"
@@ -91,7 +76,7 @@ export default function LimitedBatchSection() {
                 <path d="M315.429 342.857c-4.571 0-9.143-.914-12.8-1.829l-105.143-36.571c-21.029-7.314-32-30.171-24.686-51.2l.914-1.829c2.743-6.4 6.4-12.8 12.8-17.371 3.657-2.743 8.229-2.743 11.886 0 21.029 17.371 40.229 30.171 51.2 34.743 10.971 4.571 28.343-2.743 32.914-13.714 1.829-4.571 6.4-6.4 10.971-4.571l36.571 12.8c10.057 3.657 18.286 10.971 22.857 20.114s5.486 21.029 1.829 31.086l-.914.914c-3.657 10.057-10.971 18.286-20.114 22.857-5.485 2.743-11.885 4.571-18.285 4.571M192 253.257c-.914.914-1.829 2.743-1.829 3.657l-.914 1.829c-3.657 11.886 1.829 23.771 13.714 28.343l105.143 36.571c5.486 1.829 11.886 1.829 16.457-.914 5.486-2.743 9.143-7.314 10.971-12.8l.914-1.829c1.829-5.486 1.829-11.886-.914-16.457-2.743-5.486-7.314-9.143-12.8-10.971l-29.257-10.971c-11.886 14.629-34.743 22.857-52.114 15.543-11.885-4.572-29.257-16.458-49.371-32.001m153.6 59.429" />
               </svg>{" "}
               <span className="text-lg font-anekBangla">
-                {limitedBatchData.cta.label}
+                {promotionData.cta.label}
               </span>
             </Button>
           </div>

@@ -37,6 +37,13 @@ export default function HeroSection() {
           className="h-full w-full object-cover"
         />
       </div>
+      <div className="absolute inset-0 flex md:hidden items-center justify-center pointer-events-none opacity-20 h-full">
+        <img
+          src={heroData.mobileHeroBg}
+          alt=""
+          className="h-full w-full object-fill"
+        />
+      </div>
       <Container className=" z-10 max-w-8xl mx-auto">
         <div
           ref={sectionRef}
@@ -74,10 +81,7 @@ export default function HeroSection() {
             </p>
 
             <div data-hero-animate className="mt-6">
-              <Button
-                onClick={handleCTA}
-                className="inline-flex items-center gap-4 px-8 py-4 bg-gradient-to-r from-[#1B634C] via-[#0F3D2E] to-[#1B634C] text-white border-2 border-[#C9A14A] animate-pulse transition-all duration-300"
-              >
+              <Button onClick={handleCTA} variant="premium">
                 <svg
                   className="w-8 h-8"
                   xmlns="http://www.w3.org/2000/svg"
@@ -128,18 +132,24 @@ export default function HeroSection() {
       </Container>
 
       {/* MOBILE SLIDER */}
-      <div className="mt-10 sm:hidden">
-        <div className="flex animate-[scroll_20s_linear_infinite] gap-6 px-4">
-          {heroData.products.map((item) => (
-            <div key={item.id} className="min-w-[220px] text-center">
-              <span className="mb-2 inline-block rounded-full bg-white px-3 py-1 text-xs shadow">
+      <div className="mt-0 z-10 sm:hidden overflow-hidden">
+        <div className="flex w-max animate-marquee gap-4 px-4 hover:[animation-play-state:paused]">
+          {/* First Set of Items */}
+          {[...heroData.products, ...heroData.products].map((item, index) => (
+            <div
+              key={`${item.id}-${index}`}
+              className="min-w-[150px] flex-shrink-0 text-center"
+            >
+              <span className="mb-2 inline-block rounded-full border border-white/40 bg-white/30 px-3 py-1 text-sm font-bold uppercase tracking-wider text-green-900 backdrop-blur-md shadow-sm">
                 {item.badge}
               </span>
-              <img
-                src={item.image}
-                alt={item.badge}
-                className="mx-auto h-40 object-contain"
-              />
+              <div className="relative">
+                <img
+                  src={item.image}
+                  alt={item.badge}
+                  className="mx-auto h-52 w-auto object-contain drop-shadow-md"
+                />
+              </div>
             </div>
           ))}
         </div>

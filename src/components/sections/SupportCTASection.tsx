@@ -12,7 +12,9 @@ export default function SupportCTASection() {
           </h3>
 
           <div className="space-y-3 text-text-accent font-anekBangla font-semibold">
-            <p>📞 কল / WhatsApp করুন: {supportCTAData.phone}</p>
+            <a href="https://wa.me/+8801733358158" target="_blank">
+              📞 কল / WhatsApp করুন: {supportCTAData.phone}
+            </a>
             <p>✉️ ইমেইল: {supportCTAData.email}</p>
           </div>
         </div>

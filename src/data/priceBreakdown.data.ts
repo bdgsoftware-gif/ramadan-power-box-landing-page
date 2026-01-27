@@ -23,7 +23,7 @@ export const priceBreakdownData = {
     price: "৪,৯৯০ টাকায়",
     note: "আপনি শুধু কিনছেন না, আপনি রমজানের জন্য নিশ্চিত হচ্ছেন।",
     cta: {
-      label: "আমার বক্স কনফার্ম করুন",
+      label: "আপনার বক্স কনফার্ম করুন",
       scrollTo: "order-section",
     },
   },

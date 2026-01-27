@@ -44,7 +44,9 @@ export default function PriceBreakdownSection() {
                     {row.label}
                   </td>
                   <td className="font-anekBangla font-medium text-base border py-4 px-8">
-                    <span className="font-bengali font-extrabold text-sm">৳</span>
+                    <span className="font-bengali font-extrabold text-sm">
+                      ৳
+                    </span>
                     {row.price}
                   </td>
                 </tr>
@@ -75,12 +77,9 @@ export default function PriceBreakdownSection() {
           </p>
 
           <div data-hero-animate className="mt-6">
-            <Button
-              onClick={handleCTA}
-              className="inline-flex items-center gap-4 px-8 py-4 bg-gradient-to-r from-[#1B634C] via-[#0F3D2E] to-[#1B634C] text-white border-2 border-[#C9A14A] animate-pulse transition-all duration-300"
-            >
+            <Button onClick={handleCTA} variant="primary">
               <svg
-                className="w-8 h-8"
+                className="w-6 h-6 md:w-8 md:h-8"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 512 512"
                 xmlSpace="preserve"

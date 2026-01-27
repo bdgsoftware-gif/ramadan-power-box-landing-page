@@ -5,36 +5,49 @@ import Container from "../ui/Container";
 import { sadakahData } from "../../data/sadakah.data";
 
 export default function SadakahSection() {
-  const ref = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
-    if (!ref.current) return;
+    const ctx = gsap.context(() => {
+      // Targets elements with .animate-sadakah class
+      gsap.from(".animate-sadakah", {
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 85%",
+          toggleActions: "play none none none",
+        },
+        y: 30,
+        opacity: 0,
+        stagger: 0.2,
+        duration: 0.8,
+        ease: "power2.out",
+      });
+    }, containerRef);
 
-    gsap.from(ref.current.children, {
-      scrollTrigger: {
-        trigger: ref.current,
-        start: "top 80%",
-      },
-      y: 30,
-      opacity: 0,
-      stagger: 0.2,
-      duration: 0.6,
-      ease: "power2.out",
-    });
+    return () => ctx.revert(); // Cleanup
   }, []);
 
   return (
-    <Section className="bg-[#6b3f3f] text-white">
-      <Container>
-        <div ref={ref} className="grid gap-8 md:grid-cols-2 md:items-center">
-          <img src={sadakahData.image} alt="" className="rounded-xl" />
+    <Section className="bg-[#714646] text-white">
+      <Container className="max-w-2xl mx-auto">
+        <div
+          ref={containerRef}
+          className="flex flex-col md:flex-row md:gap-20 items-center md:items-start"
+        >
+          <img
+            src={sadakahData.image}
+            alt="Sadakah"
+            className="animate-sadakah max-h-[290px] rounded-xl"
+          />
 
-          <div>
-            <h3 className="text-xl font-bold mb-3">{sadakahData.title}</h3>
-
-            <p className="opacity-90">{sadakahData.text}</p>
-
-            <p className="mt-4 text-yellow-300 font-semibold">
+          <div className="animate-sadakah py-6">
+            <h3 className="text-2xl md:text-3xl font-medium font-anekBangla mb-3">
+              {sadakahData.title}
+            </h3>
+            <p className="opacity-90 text-xl md:text-xl font-anekBangla mt-8">
+              {sadakahData.text}
+            </p>
+            <p className="text-xl md:text-3xl font-anekBangla text-[#FFD567] font-medium mt-6">
               ✨ {sadakahData.highlight}
             </p>
           </div>

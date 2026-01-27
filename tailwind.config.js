@@ -5,9 +5,16 @@ export default {
   theme: {
     extend: {
       maxWidth: {
-        "8xl": "88rem",
-        "9xl": "96rem",
-        "10xl": "104rem",
+        xl: "36rem", // 576px
+        "2xl": "42rem", // 672px
+        "3xl": "48rem", // 768px
+        "4xl": "56rem", // 896px
+        "5xl": "64rem", // 1024px
+        "6xl": "72rem", // 1152px
+        "7xl": "80rem", // 1280px
+        "8xl": "88rem", // 1408px
+        "9xl": "96rem", // 1536px
+        "10xl": "104rem", // 1664px
       },
       fontFamily: {
         inter: ["Inter", ...defaultTheme.fontFamily.sans],
@@ -46,6 +53,22 @@ export default {
           accent: "#FFF7ED", // light Ramadan tone
           card: "#F8FAFC",
           faq: "#FFFBF4",
+        },
+      },
+      animation: {
+        marquee: "marquee 20s linear infinite",
+        "button-shake": "shake 3s ease-in-out infinite",
+      },
+      keyframes: {
+        marquee: {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
+        shake: {
+          "0%, 100%": { transform: "rotate(0deg)" },
+          "10%, 30%, 50%": { transform: "rotate(-2deg)" },
+          "20%, 40%, 60%": { transform: "rotate(2deg)" },
+          "70%, 90%": { transform: "rotate(0deg)" },
         },
       },
     },

@@ -10,5 +10,8 @@ export const limitedBatchData = {
     date: "15 February 2026 (11:59 PM)",
     note: "১৫ ফেব্রুয়ারির পর এই প্যাকেজ আর দেওয়া হবে না (পরবর্তীতে আলাদা খেজুর পাওয়া যাবে)",
   },
-  cta: "আমার বক্স কনফার্ম করুন",
+  cta: {
+    label: "আপনার বক্স কনফার্ম করুন",
+    scrollTo: "order-section",
+  },
 };
