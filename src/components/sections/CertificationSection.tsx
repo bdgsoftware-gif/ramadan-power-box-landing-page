@@ -72,7 +72,7 @@ export default function CertificationSection() {
           <h2 className="animate-header text-center font-anekBangla text-2xl font-bold text-text-dark">
             {data.title}
           </h2>
-
+          <p className="text-sm text-center font-ebGaramond">{data.warn}</p>
           <p className="animate-header mx-auto font-anekBangla mt-3 max-w-2xl text-center text-sm text-text-dark">
             {data.subtitle}
           </p>
