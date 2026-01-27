@@ -1,5 +1,5 @@
 export const productDetailsData = {
-  title: "একটি বক্সেই পাচ্ছেন—",
+  title: "একটি বক্সে পাচ্ছেন",
 
   items: [
     {
@@ -8,12 +8,12 @@ export const productDetailsData = {
     },
     {
       icon: "gift",
-      text: "Vital Mix (205g) — উপহার",
+      text: "Vital Mix (205g)  উপহার",
       highlight: true,
     },
     {
       icon: "gift",
-      text: "PINK AURA Himalayan Pink Salt — উপহার",
+      text: "PINK AURA Himalayan Pink Salt  উপহার",
     },
     {
       icon: "calendar",
@@ -43,8 +43,8 @@ export const productDetailsData = {
 
   pricing: {
     price: "৪,৯৯০",
-    note: "এটা শুধু একটি পণ্য নয়—এটা আপনার সম্পূর্ণ রমজান প্রস্তুতি\nবাজারের সব দাম তুলনা করে নিশ্চিতকৃত",
-    cta: "আমার বক্স কনফার্ম করুন",
+    note: "এটা শুধু একটি পণ্য নয়, এটা আপনার সম্পূর্ণ রমজান প্রস্তুতি\nবাজারের সব দাম তুলনা করে নিশ্চিতকৃত",
+    cta: "আপনার বক্স কনফার্ম করুন",
     delivery: "ফ্রি হোম ডেলিভারি (সারা বাংলাদেশে)",
     scrollTo: "order-section",
   },
