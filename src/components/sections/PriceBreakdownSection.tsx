@@ -1,23 +1,23 @@
-import Section from '../layout/Section'
-import Container from '../ui/Container'
-import Button from '../ui/Button'
-import { priceBreakdownData } from '../../data/priceBreakdown.data'
+import Section from "../layout/Section";
+import Container from "../ui/Container";
+import Button from "../ui/Button";
+import { priceBreakdownData } from "../../data/priceBreakdown.data";
 
 export default function PriceBreakdownSection() {
-  const data = priceBreakdownData
+  const data = priceBreakdownData;
 
   const handleCTA = () => {
     document
       .getElementById(data.offer.cta.scrollTo)
-      ?.scrollIntoView({ behavior: 'smooth' })
-  }
+      ?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <Section className="bg-bg-primary">
       <Container>
         {/* Title */}
         <h2 className="mb-12 text-center font-anekBangla text-text-primary text-3xl font-bold">
-          {data.title}{' '}
+          {data.title}{" "}
           <span className="text-text-accent">মোট মূল্য দাঁড়ায়</span>
         </h2>
 
@@ -40,14 +40,22 @@ export default function PriceBreakdownSection() {
             <tbody>
               {data.table.rows.map((row, i) => (
                 <tr key={i}>
-                  <td className="font-anekBangla font-medium text-base border py-4 px-8">{row.label}</td>
-                  <td className="font-anekBangla font-medium text-base border py-4 px-8">{row.price}</td>
+                  <td className="font-anekBangla font-medium text-base border py-4 px-8">
+                    {row.label}
+                  </td>
+                  <td className="font-anekBangla font-medium text-base border py-4 px-8">
+                    <span className="font-bengali font-extrabold text-sm">৳</span>
+                    {row.price}
+                  </td>
                 </tr>
               ))}
 
-              <tr className="font-bold">
-                <td className="font-anekBangla font-medium text-lg border py-4 px-8">Total</td>
+              <tr className="">
+                <td className="font-anekBangla font-medium text-lg border py-4 px-8">
+                  Total
+                </td>
                 <td className="font-anekBangla font-medium text-lg border py-4 px-8 text-red-600">
+                  <span className="font-bengali font-extrabold text-sm">৳</span>
                   {data.table.total}
                 </td>
               </tr>
@@ -58,7 +66,7 @@ export default function PriceBreakdownSection() {
         {/* Offer */}
         <div className="mt-16 text-center">
           <h3 className="text-3xl font-bold">
-            {data.offer.label}{' '}
+            {data.offer.label}{" "}
             <span className="text-text-accent">{data.offer.price}</span>
           </h3>
 
@@ -104,5 +112,5 @@ export default function PriceBreakdownSection() {
         </div>
       </Container>
     </Section>
-  )
+  );
 }

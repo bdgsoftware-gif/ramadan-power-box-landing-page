@@ -1,83 +1,294 @@
+import { useLayoutEffect, useRef, useState } from "react";
+import { gsap } from "../../animations/gsap.config";
 import Section from "../layout/Section";
 import Container from "../ui/Container";
 import Button from "../ui/Button";
 import { orderFormData } from "../../data/orderForm.data";
 
 export default function OrderFormSection() {
-  const { product, shippingCost } = orderFormData;
+  const { product, shipping, paymentNote, cta, box } = orderFormData;
+
+  const imageRef = useRef(null);
+
+  const handleMouseMove = (e) => {
+    const { clientX, clientY, currentTarget } = e;
+    const { width, height, left, top } = currentTarget.getBoundingClientRect();
+
+    // Calculate mouse position relative to the center of the element
+    // Resulting values range from -0.5 to 0.5
+    const xRel = (clientX - left) / width - 0.5;
+    const yRel = (clientY - top) / height - 0.5;
+
+    // Rotation intensity (adjust these numbers for more/less tilt)
+    const rotateY = xRel * 30; // Tilt up to 30 degrees horizontally
+    const rotateX = -yRel * 30; // Tilt up to 30 degrees vertically
+
+    gsap.to(imageRef.current, {
+      rotateY,
+      rotateX,
+      transformPerspective: 1000,
+      ease: "power3.out",
+      scale: 1.1,
+      y: -10,
+      duration: 0.5,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    // Reset image to flat position
+    gsap.to(imageRef.current, {
+      rotateY: 0,
+      rotateX: 0,
+      ease: "power3.out",
+      scale: 1,
+      y: 0,
+      duration: 0.5,
+    });
+  };
+
+  const [qty, setQty] = useState(1);
+
+  const subtotal = product.price * qty;
+  const total = subtotal + shipping.price;
 
   return (
-    <Section id="order-section" paddedBottom className="bg-bg-primary">
+    <Section id="order-section" paddedBottom className="max-w-4xl mx-auto">
       <Container>
         {/* Header */}
         <div className="mb-10 bg-gradient-to-l from-[#129369] to-[#1B634C] py-12 text-center text-3xl font-anekBangla font-semibold text-white">
           অর্ডার করতে নিচের ফর্ম পূরণ করুন
         </div>
-
-        <div className="grid gap-10 md:grid-cols-2">
-          {/* Left Form */}
-          <div>
-            <h3 className="mb-6 text-lg font-semibold">অর্ডারের তথ্য</h3>
-
-            <div className="space-y-4">
-              <input
-                className="w-full rounded-lg border px-4 py-3"
-                placeholder="আপনার নাম লিখুন *"
-              />
-              <input
-                className="w-full rounded-lg border px-4 py-3"
-                placeholder="বিস্তারিত ঠিকানা লিখুন *"
-              />
-              <input
-                className="w-full rounded-lg border px-4 py-3"
-                placeholder="১১ ডিজিটের ফোন নম্বর লিখুন *"
-              />
-            </div>
-
-            <div className="mt-8">
-              <h4 className="mb-2 font-semibold">Shipping</h4>
-              <div className="flex items-center justify-between rounded-lg border px-4 py-3">
-                <span>ডেলিভারি চার্জ (সারা বাংলাদেশ)</span>
-                <span>{shippingCost.toFixed(2)}</span>
-              </div>
+        <div className="my-5">
+          <span className="font-anekBangla text-2xl font-light text-text-primary">
+            আপনার অর্ডার
+          </span>
+        </div>
+        {/* Product box */}
+        <div className="relative mb-12 w-full overflow-hidden rounded-lg border-2 bg-white p-8">
+          {/* Ribbon Container */}
+          <div className="absolute right-0 top-0 h-24 w-24 overflow-hidden">
+            <div className="absolute top-[20px] -right-[35px] w-[140px] rotate-45 bg-green-600 py-1 text-center font-anekBangla text-sm font-semibold text-white shadow-sm">
+              {product.badge}
             </div>
           </div>
 
-          {/* Right Summary */}
+          {/* Product Cart - Grid Layout */}
+          <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-6">
+            {/* Left Part: Product Details (Always Visible) */}
+            <div className="flex items-start gap-4">
+              <input
+                type="checkbox"
+                checked
+                readOnly
+                className="accent-green-600 w-4 h-4 mt-1"
+              />
+
+              <img
+                src={product.image}
+                alt={product.name}
+                className="h-20 w-24 rounded-lg object-cover border shadow-sm flex-shrink-0"
+              />
+
+              <div className="flex-1">
+                <p className="font-semibold text-lg font-ebGaramond leading-tight text-text-dark">
+                  {product.name}
+                </p>
+                <p className="text-sm text-text-secondary font-anekBangla font-medium mt-1">
+                  জনপ্রিয়
+                </p>
+
+                {/* Quantity Selector */}
+                <div className="inline-flex items-center gap-2 mt-3 border rounded-md bg-white">
+                  <button
+                    onClick={() => setQty(Math.max(1, qty - 1))}
+                    className="h-8 w-8 rounded-l border-r hover:bg-gray-50 transition-colors"
+                  >
+                    −
+                  </button>
+                  <span className="w-8 text-center font-medium">{qty}</span>
+                  <button
+                    onClick={() => setQty(qty + 1)}
+                    className="h-8 w-8 rounded-r border-l hover:bg-gray-50 transition-colors"
+                  >
+                    +
+                  </button>
+                </div>
+
+                <div className="font-bold mt-2 font-anekBangla text-xl text-text-dark">
+                  <span className="font-bengali text-base font-extrabold">
+                    ৳
+                  </span>
+                  {subtotal.toLocaleString("bn-BD")}
+                </div>
+              </div>
+            </div>
+
+            {/* Right Part: Box Image (Hidden on Mobile, Centered on Desktop) */}
+            <div
+              className="hidden md:flex shrink-0 items-center justify-center"
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              style={{ perspective: "1000px" }}
+            >
+              <img
+                ref={imageRef}
+                src={box}
+                alt="Product Box"
+                className="w-48 h-auto object-contain drop-shadow-xl"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Main grid */}
+        <div className="grid gap-10 md:grid-cols-2">
+          {/* Left: Form */}
           <div>
-            <h3 className="mb-6 text-lg font-semibold">আপনার অর্ডার</h3>
+            <h3 className="mb-6 text-2xl font-medium">অর্ডারের তথ্য</h3>
 
-            <div className="rounded-lg border p-4">
-              <div className="flex items-center gap-4">
-                <img src={product.image} alt="" className="h-14 w-14 rounded" />
-                <div className="flex-1">
-                  <p>{product.name}</p>
-                  <p className="text-sm text-text-secondary">
-                    ৳{product.price}
-                  </p>
-                </div>
+            <form className="space-y-4 pr-3">
+              {/* Name Field */}
+              <div className="flex flex-col gap-2">
+                <label className="font-anekBangla text-gray-700 font-medium">
+                  আপনার নাম লিখুন <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  className="w-full rounded-md border border-gray-300 px-4 py-3 font-anekBangla outline-none transition-all focus:border-[#1B634C] focus:ring-2 focus:ring-[#1B634C]/20 shadow-sm"
+                  placeholder="আপনার নাম লিখুন"
+                  required
+                />
               </div>
 
-              <div className="mt-4 space-y-2 border-t pt-4 text-sm">
-                <div className="flex justify-between">
-                  <span>Subtotal</span>
-                  <span>৳{product.price}</span>
-                </div>
-                <div className="flex justify-between font-semibold">
-                  <span>Total</span>
-                  <span>৳{product.price}</span>
-                </div>
+              {/* Phone Field */}
+              <div className="flex flex-col gap-2">
+                <label className="font-anekBangla text-gray-700 font-medium">
+                  ১১ ডিজিটের ফোন নম্বর লিখুন{" "}
+                  <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="tel"
+                  className="w-full rounded-md border border-gray-300 px-4 py-3 font-anekBangla outline-none transition-all focus:border-[#1B634C] focus:ring-2 focus:ring-[#1B634C]/20 shadow-sm"
+                  placeholder="০১৮XXXXXXXX"
+                  required
+                />
               </div>
 
-              <div className="mt-6 text-xs text-text-secondary">
-                Your personal data will be used to process your order, support
-                your experience and for other purposes described in our privacy
-                policy.
+              {/* Address Field */}
+              <div className="flex flex-col gap-2">
+                <label className="font-anekBangla text-gray-700 font-medium">
+                  বিস্তারিত ঠিকানা লিখুন <span className="text-red-500">*</span>
+                </label>
+                <textarea
+                  rows="2"
+                  className="w-full rounded-md border border-gray-300 px-4 py-3 font-anekBangla outline-none transition-all focus:border-[#1B634C] focus:ring-2 focus:ring-[#1B634C]/20 shadow-sm"
+                  placeholder="গ্রাম/মহল্লা, রোড নম্বর, থানা ও জেলা লিখুন"
+                  required
+                />
               </div>
 
-              <div data-hero-animate className="mt-6">
+              {/* Shipping Selection */}
+              <div className="mt-10">
+                <h4 className="mb-4 font-semibold font-anekBangla text-lg text-text-dark">
+                  Shipping Method
+                </h4>
+                <div className="flex items-center justify-between rounded-lg border-2 border-[#1B634C] bg-[#1B634C]/5 px-5 py-4 shadow-sm">
+                  <div className="flex items-center gap-3">
+                    <div className="h-5 w-5 rounded-full border-4 border-[#1B634C] bg-white"></div>
+                    <span className="font-anekBangla text-base font-medium">
+                      {shipping.label}
+                    </span>
+                  </div>
+                  <span className="font-bold text-[#1B634C]">
+                    ৳{shipping.price.toFixed(0)}
+                  </span>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          {/* Right: Summary */}
+          <div>
+            <h3 className="mb-6 text-2xl font-medium">আপনার অর্ডার</h3>
+
+            <div className="rounded border px-8 py-4">
+              <div className="flex justify-between border-b border-dashed border-text-accent/40 pb-3">
+                <span className="font-anekBangla text-text-primary font-medium text-lg">
+                  Product
+                </span>
+                <span className="font-anekBangla text-text-primary font-medium text-lg">
+                  Subtotal
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between py-4 border-b border-dashed border-text-accent/40">
+                <span className="font-anekBangla text-text-primary font-normal text-base">
+                  {product.name}
+                </span>
+                <span className="font-anekBangla text-text-primary font-medium text-base">
+                  ৳{subtotal.toLocaleString("bn-BD")}
+                </span>
+              </div>
+
+              <div className="flex justify-between py-3 border-b">
+                <span className="font-anekBangla text-text-primary font-normal text-base">
+                  Subtotal
+                </span>
+                <span className="font-anekBangla text-text-primary font-medium text-base">
+                  ৳{subtotal.toLocaleString("bn-BD")}
+                </span>
+              </div>
+
+              <div className="flex justify-between py-3 font-semibold">
+                <span className="font-anekBangla text-text-primary font-medium text-lg">
+                  Total
+                </span>
+                <span className="font-anekBangla text-text-primary font-medium text-lg">
+                  ৳{total.toLocaleString("bn-BD")}
+                </span>
+              </div>
+
+              <div className="mt-4 text-text-accent font-anekBangla font-bold text-lg">
+                ক্যাশ অন ডেলিভারি (বাকি) : ৳{total.toLocaleString("bn-BD")}
+              </div>
+
+              <div className="mt-4 flex items-start gap-2 text-sm font-anekBangla text-text-secondary">
+                {/* Red alert icon */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-8 h-8"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                    stroke="#FB2C36"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M12 8V12"
+                    stroke="#FB2C36"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M12 16H12.01"
+                    stroke="#FB2C36"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                <span>{paymentNote}</span>
+              </div>
+
+              <div className="mt-6">
                 <Button
-                  className="w-full flex items-center gap-4 px-8 py-4 bg-gradient-to-r from-[#1B634C] via-[#0F3D2E] to-[#1B634C] text-white border-2 border-[#C9A14A] animate-pulse transition-all duration-300"
+                  fullWidth
+                  className="gap-3 bg-gradient-to-r from-button-primary/50 via-button-primary to-button-primary/50 text-white border-2 border-[#0F3D2E] animate-pulse transition-all duration-300"
                 >
                   <svg
                     className="w-8 h-8"

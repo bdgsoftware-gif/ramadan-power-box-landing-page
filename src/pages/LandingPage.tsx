@@ -9,8 +9,12 @@ import RealityCheckSection from "../components/sections/RealityCheckSection";
 import TransformationChallengeSection from "../components/sections/TransformationChallengeSection";
 import OrderFormSection from "../components/sections/OrderFormSection";
 import CertificationSection from "../components/sections/CertificationSection";
+import FounderMessageSection from "../components/sections/FounderMessageSection";
+import SadakahSection from "../components/sections/SadakahSection";
 import PriceBreakdownSection from "../components/sections/PriceBreakdownSection";
-import FreeBonusScrollSection from "../components/sections/FreeBonusScrollSection";
+import FAQSection from "../components/sections/FAQSection";
+import SupportCTASection from "../components/sections/SupportCTASection";
+// import FreeBonusScrollSection from "../components/sections/FreeBonusScrollSection";
 // import HowItWorksSection from "../components/sections/HowItWorksSection";
 // import TrustSection from "../components/sections/TrustSection";
 // import PricingSection from "../components/sections/PricingSection";
@@ -28,7 +32,9 @@ export default function LandingPage() {
       <PremiumDatesSection />
       <RealityCheckSection />
       <TransformationChallengeSection />
-      <FreeBonusScrollSection />
+      <SadakahSection />
+      <FounderMessageSection />
+      {/* <FreeBonusScrollSection /> */}
       <PriceBreakdownSection />
       <OrderFormSection />
       {/*   <HowItWorksSection />
@@ -36,6 +42,8 @@ export default function LandingPage() {
       <PricingSection />
       <CallToActionSection />
       <Footer /> */}
+      <FAQSection />
+      <SupportCTASection />
     </PageWrapper>
   );
 }

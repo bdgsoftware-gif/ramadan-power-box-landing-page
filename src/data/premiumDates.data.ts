@@ -32,7 +32,7 @@ export const premiumDatesData = {
 
   cta: {
     label: "আমার বক্স কনফার্ম করুন",
-    price: "৪,৯৯০",
+    price: "৪,৯৯০ টাকায়",
     scrollTo: "order-section",
   },
 };

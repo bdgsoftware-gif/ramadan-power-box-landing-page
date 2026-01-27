@@ -45,6 +45,7 @@ export default {
           primary: "#FFFFFF",
           accent: "#FFF7ED", // light Ramadan tone
           card: "#F8FAFC",
+          faq: "#FFFBF4",
         },
       },
     },
