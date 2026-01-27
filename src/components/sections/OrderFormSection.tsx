@@ -1,31 +1,209 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { gsap } from "../../animations/gsap.config";
 import Section from "../layout/Section";
 import Container from "../ui/Container";
 import Button from "../ui/Button";
 import { orderFormData } from "../../data/orderForm.data";
 
+// API Constants
+const BASE_URL = "https://bionic.garden/";
+const ACCESS_KEY = "djFHwT5SlOnEVlCT2NSFr-WRxsXKdxliWTrVJJpHGyVju9oBowaKug";
+const ITEM_UID = "djHZa6_KptwK_aIlorfty1jIPgBYJZnQAZkIEJXfnkU";
+
 export default function OrderFormSection() {
   const { product, shipping, paymentNote, cta, box } = orderFormData;
+  const imageRef = useRef<HTMLImageElement>(null);
 
-  const imageRef = useRef(null);
+  /* =====================
+     STATE
+     ====================== */
+  const [order_form, setOrderForm] = useState({
+    contact_name: "",
+    contact_number: "",
+    address: "",
+  });
+
+  const [orderKey, setOrderKey] = useState<string | null>(null);
+  const [deviceKey, setDeviceKey] = useState<string | null>(null);
+
+  // Cart data comes from the API response
+  const [cart, setCart] = useState<any>({ sub_total: 0, payable_amount: 0 });
+  const [cartItems, setCartItems] = useState<any[]>([]);
+
+  const [loading, setLoading] = useState(false);
+  const [pageInitLoading, setPageInitLoading] = useState(true);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [orderRequestStatus, setOrderRequestStatus] = useState("");
+
+  /* =====================
+     DEVICE FINGERPRINT
+     ====================== */
+  const getDeviceKey = async () => {
+    let cached = localStorage.getItem("device_key");
+    if (cached) return cached;
+
+    const raw = {
+      userAgent: navigator.userAgent || "",
+      language: navigator.language || "",
+      platform: (navigator as any).platform || "",
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "",
+      screen: `${window.screen.width}x${window.screen.height}`,
+      colorDepth: window.screen.colorDepth || "",
+    };
+
+    const fingerprintString = Object.values(raw).join("|");
+    const encoder = new TextEncoder();
+    const data = encoder.encode(fingerprintString);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+
+    const key = Array.from(new Uint8Array(hashBuffer))
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
+
+    localStorage.setItem("device_key", key);
+    return key;
+  };
+
+  /* =====================
+     API: INITIATE ORDER
+     ====================== */
+  useEffect(() => {
+    const initiateOrder = async () => {
+      setPageInitLoading(true);
+      try {
+        const dKey = await getDeviceKey();
+        setDeviceKey(dKey);
+
+        const res = await fetch(
+          `${BASE_URL}ecom/ecom_api/initiate?access_key=${ACCESS_KEY}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              order_key: dKey,
+              items: [{ uid: ITEM_UID, quantity: 1 }],
+            }),
+          }
+        );
+
+        const data = await res.json();
+        if (!res.ok || !data.order_key) throw new Error("Initiation failed");
+
+        setOrderKey(data.order_key);
+        setCart(data.cart);
+        setCartItems(data.cart.items);
+        if (data.order_form) setOrderForm(data.order_form);
+      } catch (err) {
+        setErrorMessage("অর্ডার শুরু করতে সমস্যা হয়েছে। পৃষ্ঠা রিফ্রেশ করুন।");
+      } finally {
+        setPageInitLoading(false);
+      }
+    };
+
+    initiateOrder();
+  }, []);
+
+  /* =====================
+     API: UPDATE CART
+     ====================== */
+  const updateOrder = async (updatedItems: any[]) => {
+    try {
+      const res = await fetch(
+        `${BASE_URL}ecom/ecom_api/update_cart?access_key=${ACCESS_KEY}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            order_key: deviceKey,
+            items: updatedItems,
+            ...order_form,
+          }),
+        }
+      );
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Update failed");
+
+      setCart(data.cart);
+      setCartItems(data.cart.items);
+      setOrderForm(data.order_form);
+    } catch (err: any) {
+      console.error("Cart update error:", err.message);
+    }
+  };
+
+  /* =====================
+     API: PROCESS ORDER
+     ====================== */
+  const submitOrder = async () => {
+    if (!orderKey || !deviceKey) {
+      window.location.reload();
+      return;
+    }
+
+    if (!order_form.contact_name || !order_form.contact_number || !order_form.address) {
+      setErrorMessage("সব তথ্য পূরণ করুন");
+      return;
+    }
+
+    setLoading(true);
+    setErrorMessage("");
+    setSuccessMessage("");
+
+    try {
+      const res = await fetch(
+        `${BASE_URL}ecom/ecom_api/process_order?access_key=${ACCESS_KEY}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            order_key: orderKey,
+            ...order_form,
+          }),
+        }
+      );
+
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.message || "Order failed");
+
+      setOrderRequestStatus(result.order_request_status);
+
+      if (result.order_request_status === "invalid_order") {
+        window.location.reload();
+      } else if (result.order_request_status === "may_be_fake") {
+        setErrorMessage("দুঃখিত! আপনার অর্ডার সিকিউরিটি চেকে আছে। কিছুক্ষণ অপেক্ষা করুন অথবা আমাদের সাথে যোগাযোগ করুন।");
+      } else {
+        setSuccessMessage(result.message || "✅ আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। ধন্যবাদ!");
+      }
+    } catch (err: any) {
+      setErrorMessage(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /* =====================
+     INTERACTIONS
+     ====================== */
+  const handleQtyChange = (uid: string, newQty: number) => {
+    const updated = cartItems.map((item) =>
+      item.uid === uid ? { ...item, quantity: Math.max(1, newQty) } : item
+    );
+    setCartItems(updated);
+    updateOrder(updated);
+  };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!imageRef.current) return;
     const { clientX, clientY, currentTarget } = e;
-    const { width, height, left, top } = currentTarget.getBoundingClientRect();
-
-    // Calculate mouse position relative to the center of the element
-    // Resulting values range from -0.5 to 0.5
-    const xRel = (clientX - left) / width - 0.5;
-    const yRel = (clientY - top) / height - 0.5;
-
-    // Rotation intensity (adjust these numbers for more/less tilt)
-    const rotateY = xRel * 30; // Tilt up to 30 degrees horizontally
-    const rotateX = -yRel * 30; // Tilt up to 30 degrees vertically
+    const rect = currentTarget.getBoundingClientRect();
+    const x = (clientX - rect.left) / rect.width - 0.5;
+    const y = (clientY - rect.top) / rect.height - 0.5;
 
     gsap.to(imageRef.current, {
-      rotateY,
-      rotateX,
+      rotateY: x * 30,
+      rotateX: -y * 30,
       transformPerspective: 1000,
       ease: "power3.out",
       scale: 1.1,
@@ -35,7 +213,6 @@ export default function OrderFormSection() {
   };
 
   const handleMouseLeave = () => {
-    // Reset image to flat position
     gsap.to(imageRef.current, {
       rotateY: 0,
       rotateX: 0,
@@ -46,10 +223,34 @@ export default function OrderFormSection() {
     });
   };
 
-  const [qty, setQty] = useState(1);
+  // Calculate totals from API data
+  const subtotal = cart.sub_total || 0;
+  const total = cart.payable_amount || 0;
 
-  const subtotal = product.price * qty;
-  const total = subtotal + shipping.price;
+  if (pageInitLoading) {
+    return (
+      <Section id="order-section" paddedBottom className="max-w-4xl mx-auto">
+        <Container>
+          <div className="text-center py-20 font-anekBangla text-xl text-text-primary">
+            অর্ডার প্রস্তুত হচ্ছে...
+          </div>
+        </Container>
+      </Section>
+    );
+  }
+
+  if (orderRequestStatus === "confirmed") {
+    return (
+      <Section id="order-section" paddedBottom className="max-w-4xl mx-auto">
+        <Container>
+          <div className="text-center py-20 border rounded-lg bg-white font-anekBangla shadow-sm">
+            <h2 className="text-2xl font-bold text-green-700">Congratulations!</h2>
+            <p className="mt-2 text-gray-600 text-lg">Your order is placed successfully.</p>
+          </div>
+        </Container>
+      </Section>
+    );
+  }
 
   return (
     <Section id="order-section" paddedBottom className="max-w-4xl mx-auto">
@@ -58,11 +259,27 @@ export default function OrderFormSection() {
         <div className="mb-10 bg-gradient-to-l from-[#129369] to-[#1B634C] py-12 text-center text-3xl font-anekBangla font-semibold text-white">
           অর্ডার করতে নিচের ফর্ম পূরণ করুন
         </div>
+
+        {/* Error Message */}
+        {errorMessage && (
+          <div className="mb-6 rounded-lg bg-red-50 border-2 border-red-200 px-5 py-4 font-anekBangla text-red-700 font-medium">
+            ⚠️ {errorMessage}
+          </div>
+        )}
+
+        {/* Success Message */}
+        {successMessage && (
+          <div className="mb-6 rounded-lg bg-green-50 border-2 border-green-200 px-5 py-4 font-anekBangla text-green-700 font-medium">
+            ✅ {successMessage}
+          </div>
+        )}
+
         <div className="my-5">
           <span className="font-anekBangla text-2xl font-light text-text-primary">
             আপনার অর্ডার
           </span>
         </div>
+
         {/* Product box */}
         <div className="relative mb-12 w-full overflow-hidden rounded-lg border-2 bg-white p-8">
           {/* Ribbon Container */}
@@ -74,7 +291,7 @@ export default function OrderFormSection() {
 
           {/* Product Cart - Grid Layout */}
           <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-6">
-            {/* Left Part: Product Details (Always Visible) */}
+            {/* Left Part: Product Details */}
             <div className="flex items-start gap-4">
               <input
                 type="checkbox"
@@ -97,27 +314,27 @@ export default function OrderFormSection() {
                   জনপ্রিয়
                 </p>
 
-                {/* Quantity Selector */}
-                <div className="inline-flex items-center gap-2 mt-3 border rounded-md bg-white">
-                  <button
-                    onClick={() => setQty(Math.max(1, qty - 1))}
-                    className="h-8 w-8 rounded-l border-r hover:bg-gray-50 transition-colors"
-                  >
-                    −
-                  </button>
-                  <span className="w-8 text-center font-medium">{qty}</span>
-                  <button
-                    onClick={() => setQty(qty + 1)}
-                    className="h-8 w-8 rounded-r border-l hover:bg-gray-50 transition-colors"
-                  >
-                    +
-                  </button>
-                </div>
+                {/* Quantity Selector - Dynamic from API */}
+                {cartItems.map((item) => (
+                  <div key={item.uid} className="inline-flex items-center gap-2 mt-3 border rounded-md bg-white">
+                    <button
+                      onClick={() => handleQtyChange(item.uid, item.quantity - 1)}
+                      className="h-8 w-8 rounded-l border-r hover:bg-gray-50 transition-colors"
+                    >
+                      −
+                    </button>
+                    <span className="w-8 text-center font-medium">{item.quantity}</span>
+                    <button
+                      onClick={() => handleQtyChange(item.uid, item.quantity + 1)}
+                      className="h-8 w-8 rounded-r border-l hover:bg-gray-50 transition-colors"
+                    >
+                      +
+                    </button>
+                  </div>
+                ))}
 
                 <div className="font-bold mt-2 font-anekBangla text-xl text-text-dark">
-                  <span className="font-bengali text-base font-extrabold">
-                    ৳
-                  </span>
+                  <span className="font-bengali text-base font-extrabold">৳</span>
                   {subtotal.toLocaleString("bn-BD")}
                 </div>
               </div>
@@ -146,7 +363,7 @@ export default function OrderFormSection() {
           <div>
             <h3 className="mb-6 text-2xl font-medium">অর্ডারের তথ্য</h3>
 
-            <form className="space-y-4 pr-3">
+            <form className="space-y-4 pr-3" onSubmit={(e) => { e.preventDefault(); submitOrder(); }}>
               {/* Name Field */}
               <div className="flex flex-col gap-2">
                 <label className="font-anekBangla text-gray-700 font-medium">
@@ -156,6 +373,8 @@ export default function OrderFormSection() {
                   type="text"
                   className="w-full rounded-md border border-gray-300 px-4 py-3 font-anekBangla outline-none transition-all focus:border-[#1B634C] focus:ring-2 focus:ring-[#1B634C]/20 shadow-sm"
                   placeholder="আপনার নাম লিখুন"
+                  value={order_form.contact_name}
+                  onChange={(e) => setOrderForm({ ...order_form, contact_name: e.target.value })}
                   required
                 />
               </div>
@@ -170,6 +389,8 @@ export default function OrderFormSection() {
                   type="tel"
                   className="w-full rounded-md border border-gray-300 px-4 py-3 font-anekBangla outline-none transition-all focus:border-[#1B634C] focus:ring-2 focus:ring-[#1B634C]/20 shadow-sm"
                   placeholder="০১৮XXXXXXXX"
+                  value={order_form.contact_number}
+                  onChange={(e) => setOrderForm({ ...order_form, contact_number: e.target.value })}
                   required
                 />
               </div>
@@ -183,6 +404,8 @@ export default function OrderFormSection() {
                   rows={2}
                   className="w-full rounded-md border border-gray-300 px-4 py-3 font-anekBangla outline-none transition-all focus:border-[#1B634C] focus:ring-2 focus:ring-[#1B634C]/20 shadow-sm"
                   placeholder="গ্রাম/মহল্লা, রোড নম্বর, থানা ও জেলা লিখুন"
+                  value={order_form.address}
+                  onChange={(e) => setOrderForm({ ...order_form, address: e.target.value })}
                   required
                 />
               </div>
@@ -286,7 +509,12 @@ export default function OrderFormSection() {
               </div>
 
               <div className="mt-6">
-                <Button fullWidth variant="primary">
+                <Button
+                  fullWidth
+                  variant="primary"
+                  onClick={submitOrder}
+                  disabled={loading}
+                >
                   <svg
                     className="w-6 h-6 md:w-8 md:h-8"
                     xmlns="http://www.w3.org/2000/svg"
@@ -313,7 +541,7 @@ export default function OrderFormSection() {
                     <path d="M315.429 342.857c-4.571 0-9.143-.914-12.8-1.829l-105.143-36.571c-21.029-7.314-32-30.171-24.686-51.2l.914-1.829c2.743-6.4 6.4-12.8 12.8-17.371 3.657-2.743 8.229-2.743 11.886 0 21.029 17.371 40.229 30.171 51.2 34.743 10.971 4.571 28.343-2.743 32.914-13.714 1.829-4.571 6.4-6.4 10.971-4.571l36.571 12.8c10.057 3.657 18.286 10.971 22.857 20.114s5.486 21.029 1.829 31.086l-.914.914c-3.657 10.057-10.971 18.286-20.114 22.857-5.485 2.743-11.885 4.571-18.285 4.571M192 253.257c-.914.914-1.829 2.743-1.829 3.657l-.914 1.829c-3.657 11.886 1.829 23.771 13.714 28.343l105.143 36.571c5.486 1.829 11.886 1.829 16.457-.914 5.486-2.743 9.143-7.314 10.971-12.8l.914-1.829c1.829-5.486 1.829-11.886-.914-16.457-2.743-5.486-7.314-9.143-12.8-10.971l-29.257-10.971c-11.886 14.629-34.743 22.857-52.114 15.543-11.885-4.572-29.257-16.458-49.371-32.001m153.6 59.429" />
                   </svg>{" "}
                   <span className="text-base md:text-lg font-anekBangla">
-                    {cta}
+                    {loading ? "প্রক্রিয়াকরণ হচ্ছে..." : cta}
                   </span>
                 </Button>
               </div>
