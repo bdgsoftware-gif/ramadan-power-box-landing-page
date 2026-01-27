@@ -3,6 +3,10 @@ import Container from "../ui/Container";
 import { realityCheckData } from "../../data/realityCheck.data";
 
 export default function RealityCheckSection() {
+  const handleCTA = () => {
+    const el = document.getElementById(realityCheckData.cta.scrollTo);
+    el?.scrollIntoView({ behavior: "smooth" });
+  };
   return (
     <Section className="bg-bg-primary">
       <Container>
@@ -43,7 +47,7 @@ export default function RealityCheckSection() {
         </div>
 
         {/* Solution Banner */}
-        <div className="mt-14 rounded-2xl bg-gradient-to-t from-[#129369] to-[#1B634C] px-6 py-8 text-center text-text-inverse shadow-lg">
+        <div onClick={handleCTA} className="mt-14 rounded-2xl bg-gradient-to-t from-[#129369] to-[#1B634C] px-6 py-8 text-center text-text-inverse shadow-lg">
           <p className="text-lg font-anekBangla opacity-90">
             {realityCheckData.solutionBanner.textTop}
           </p>

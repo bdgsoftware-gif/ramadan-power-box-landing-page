@@ -19,28 +19,22 @@ export const heroData = {
 
   products: [
     {
+      id: "dates",
+      image: "/src/assets/images/dates.png",
+      badge: "তিন প্রকার প্রিমিয়াম খেজুর",
+      desktop: { bottom: "8%", left: "50%", translateX: "-50%" },
+    },
+    {
       id: "book",
       image: "/src/assets/images/book.png",
-      badge: "ডুআর বই",
+      badge: "ট্রাকার বই",
       desktop: { top: "70%", left: "8%" },
     },
     {
       id: "chia",
       image: "/src/assets/images/viral-mix.png",
-      badge: "চিয়া সিড",
+      badge: "ভাইটাল মিক্স",
       desktop: { top: "70%", left: "32%" },
-    },
-    {
-      id: "dates",
-      image: "/src/assets/images/dates.png",
-      badge: "তিন প্রকার প্রিমিয়াম খেজুর",
-      desktop: { bottom: "8%", left: "50%", translateX: "-50%" },
-    },
-    {
-      id: "dates",
-      image: "/src/assets/images/dates.png",
-      badge: "তিন প্রকার প্রিমিয়াম খেজুর",
-      desktop: { bottom: "8%", left: "50%", translateX: "-50%" },
     },
     {
       id: "dates",
@@ -59,6 +53,12 @@ export const heroData = {
       image: "/src/assets/images/cards.png",
       badge: "২০ দিনের ২০ হাদিস\nফ্রি কোর্স এক্সেস কার্ড",
       desktop: { top: "52%", right: "8%" },
+    },
+    {
+      id: "dates",
+      image: "/src/assets/images/dates.png",
+      badge: "তিন প্রকার প্রিমিয়াম খেজুর",
+      desktop: { bottom: "8%", left: "50%", translateX: "-50%" },
     },
   ],
 };

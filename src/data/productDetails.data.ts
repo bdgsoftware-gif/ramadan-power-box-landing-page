@@ -17,7 +17,7 @@ export const productDetailsData = {
     },
     {
       icon: "calendar",
-      text: "“রমজানের ৩০ দিন” ডুআর (Printed)",
+      text: "“রুপান্তরের ৩০ দিন ট্রাকার।",
     },
     {
       icon: "video",
