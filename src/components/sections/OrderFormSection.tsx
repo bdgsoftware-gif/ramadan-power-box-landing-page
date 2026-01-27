@@ -10,7 +10,7 @@ export default function OrderFormSection() {
 
   const imageRef = useRef(null);
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { clientX, clientY, currentTarget } = e;
     const { width, height, left, top } = currentTarget.getBoundingClientRect();
 
@@ -180,7 +180,7 @@ export default function OrderFormSection() {
                   বিস্তারিত ঠিকানা লিখুন <span className="text-red-500">*</span>
                 </label>
                 <textarea
-                  rows="2"
+                  rows={2}
                   className="w-full rounded-md border border-gray-300 px-4 py-3 font-anekBangla outline-none transition-all focus:border-[#1B634C] focus:ring-2 focus:ring-[#1B634C]/20 shadow-sm"
                   placeholder="গ্রাম/মহল্লা, রোড নম্বর, থানা ও জেলা লিখুন"
                   required
