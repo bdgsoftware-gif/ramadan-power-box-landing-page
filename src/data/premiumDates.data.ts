@@ -31,8 +31,8 @@ export const premiumDatesData = {
   footerText: "এই দামে এর চেয়ে ভালো প্রিমিয়াম কম্বিনেশন পাওয়া সত্যিই কঠিন।",
 
   cta: {
-    label: "আমার বক্স কনফার্ম করুন",
-    price: "৪,৯৯০",
+    label: "আপনার বক্স কনফার্ম করুন",
+    price: "৪,৯৯০ টাকায়",
     scrollTo: "order-section",
   },
 };

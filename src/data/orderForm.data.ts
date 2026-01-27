@@ -1,10 +1,16 @@
 export const orderFormData = {
+  box: "/src/assets/images/ramadan-power-pack.png",
   product: {
-    name: "৩ কেজি খেজুরের কম্বো",
-    price: 8990,
+    name: "Ramadan Power Box",
     image: "/src/assets/images/dates-combo.png",
+    price: 4990,
     badge: "জনপ্রিয়",
   },
-  shippingCost: 0,
+  shipping: {
+    label: "ডেলিভারি চার্জ (সারা বাংলাদেশ)",
+    price: 0,
+  },
+  paymentNote:
+    "Privacy policy : Your personal data will be used to process your order your data is secured with us.",
   cta: "অর্ডার সাবমিট করুন",
 };

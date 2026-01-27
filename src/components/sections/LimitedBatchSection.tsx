@@ -1,82 +1,69 @@
+import { useLayoutEffect, useRef } from "react";
+import { gsap } from "../../animations/gsap.config";
 import Section from "../layout/Section";
 import Container from "../ui/Container";
 import Button from "../ui/Button";
-import { priceBreakdownData } from "../../data/priceBreakdown.data";
+import { limitedBatchData } from "../../data/limitedBatch.data";
 
-export default function PriceBreakdownSection() {
-  const data = priceBreakdownData;
+export default function LimitedBatchSection() {
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const handleCTA = () => {
-    document
-      .getElementById(data.offer.cta.scrollTo)
-      ?.scrollIntoView({ behavior: "smooth" });
+    const el = document.getElementById(limitedBatchData.cta.scrollTo);
+    el?.scrollIntoView({ behavior: "smooth" });
   };
 
+  useLayoutEffect(() => {
+    // 1. Create context for scoped animation & cleanup
+    const ctx = gsap.context(() => {
+      gsap.from(".animate-limited", {
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 85%",
+          toggleActions: "play none none none",
+        },
+        y: 30,
+        opacity: 0,
+        stagger: 0.1, // Faster stagger for list items
+        duration: 0.7,
+        ease: "power2.out",
+      });
+    }, containerRef);
+
+    return () => ctx.revert(); // Cleanup on unmount
+  }, []);
+
   return (
-    <Section className="bg-bg-primary">
+    <Section className="bg-gradient-to-b from-emerald-900 to-emerald-700 text-white">
       <Container>
-        {/* Title */}
-        <h2 className="mb-12 text-center font-anekBangla text-text-primary text-3xl font-bold">
-          {data.title}{" "}
-          <span className="text-text-accent">মোট মূল্য দাঁড়ায়</span>
-        </h2>
+        <div
+          ref={containerRef}
+          className="text-center space-y-6  max-w-3xl mx-auto"
+        >
+          {/* Added .animate-limited to all direct children */}
+          <h2 className="animate-limited text-4xl font-medium font-ebGaramond">
+            {limitedBatchData.title}{" "}
+            <span className="text-[#FFD567">{limitedBatchData.highlight}</span>
+          </h2>
 
-        {/* Table */}
-        <div className="mx-auto max-w-3xl overflow-hidden rounded-xl border">
-          <table className="w-full text-sm">
-            <thead className="bg-orange-100">
-              <tr>
-                {data.table.headers.map((h, i) => (
-                  <th
-                    key={i}
-                    className="border text-lg font-anekBangla py-4 px-8 text-left font-medium"
-                  >
-                    {h}
-                  </th>
-                ))}
-              </tr>
-            </thead>
+          <ul className="space-y-3 text-xl font-anekBangla text-left">
+            {limitedBatchData.points.map((p, i) => (
+              <li key={i} className="animate-limited">
+                • {p}
+              </li>
+            ))}
+          </ul>
 
-            <tbody>
-              {data.table.rows.map((row, i) => (
-                <tr key={i}>
-                  <td className="font-anekBangla font-medium text-base border py-4 px-8">
-                    {row.label}
-                  </td>
-                  <td className="font-anekBangla font-medium text-base border py-4 px-8">
-                    <span className="font-bengali font-extrabold text-sm">
-                      ৳
-                    </span>
-                    {row.price}
-                  </td>
-                </tr>
-              ))}
+          <div className="animate-limited text-[#FFD567] font-medium text-3xl font-ebGaramond">
+            ⚠ {limitedBatchData.deadline.label}:{" "}
+            {limitedBatchData.deadline.date}
+          </div>
 
-              <tr className="">
-                <td className="font-anekBangla font-medium text-lg border py-4 px-8">
-                  Total
-                </td>
-                <td className="font-anekBangla font-medium text-lg border py-4 px-8 text-red-600">
-                  <span className="font-bengali font-extrabold text-sm">৳</span>
-                  {data.table.total}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        {/* Offer */}
-        <div className="mt-16 text-center">
-          <h3 className="text-3xl font-bold">
-            {data.offer.label}{" "}
-            <span className="text-text-accent">{data.offer.price}</span>
-          </h3>
-
-          <p className="mt-3 text-base text-text-secondary">
-            {data.offer.note}
+          <p className="animate-limited text-lg underline font-anekBangla opacity-80">
+            {limitedBatchData.deadline.note}
           </p>
 
-          <div data-hero-animate className="mt-6">
+          <div className="mt-6 animate-limited">
             <Button onClick={handleCTA} variant="primary">
               <svg
                 className="w-6 h-6 md:w-8 md:h-8"
@@ -104,7 +91,7 @@ export default function PriceBreakdownSection() {
                 <path d="M315.429 342.857c-4.571 0-9.143-.914-12.8-1.829l-105.143-36.571c-21.029-7.314-32-30.171-24.686-51.2l.914-1.829c2.743-6.4 6.4-12.8 12.8-17.371 3.657-2.743 8.229-2.743 11.886 0 21.029 17.371 40.229 30.171 51.2 34.743 10.971 4.571 28.343-2.743 32.914-13.714 1.829-4.571 6.4-6.4 10.971-4.571l36.571 12.8c10.057 3.657 18.286 10.971 22.857 20.114s5.486 21.029 1.829 31.086l-.914.914c-3.657 10.057-10.971 18.286-20.114 22.857-5.485 2.743-11.885 4.571-18.285 4.571M192 253.257c-.914.914-1.829 2.743-1.829 3.657l-.914 1.829c-3.657 11.886 1.829 23.771 13.714 28.343l105.143 36.571c5.486 1.829 11.886 1.829 16.457-.914 5.486-2.743 9.143-7.314 10.971-12.8l.914-1.829c1.829-5.486 1.829-11.886-.914-16.457-2.743-5.486-7.314-9.143-12.8-10.971l-29.257-10.971c-11.886 14.629-34.743 22.857-52.114 15.543-11.885-4.572-29.257-16.458-49.371-32.001m153.6 59.429" />
               </svg>{" "}
               <span className="text-lg font-anekBangla">
-                {data.offer.cta.label}
+                {limitedBatchData.cta.label}
               </span>
             </Button>
           </div>
