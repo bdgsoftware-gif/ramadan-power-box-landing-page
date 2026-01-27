@@ -18,4 +18,7 @@ export const realityCheckData = {
     textTop: "এই সমস্যাগুলোর সমাধান একসাথেই দিতে তৈরি হয়েছে",
     highlight: "Bionic Ramadan Power Box",
   },
+  cta: {
+    scrollTo: "order-section",
+  },
 };
