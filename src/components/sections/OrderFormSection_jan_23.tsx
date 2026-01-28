@@ -6,13 +6,11 @@ import Button from "../ui/Button";
 import { orderFormData } from "../../data/orderForm.data";
 
 // API Constants
-// const ITEM_UID = "djFD0V6AWU4JwmJT_-xeVppYTtfcC_Lt3m5-7JvCqP4";
-// const BASE_URL = 'http://localhost:9100/';
-
- const BASE_URL = "https://bionic.garden/";
+//  const BASE_URL = "https://bionic.garden/";
+const BASE_URL = 'http://localhost:9100/';
 const ACCESS_KEY = "djFHwT5SlOnEVlCT2NSFr-WRxsXKdxliWTrVJJpHGyVju9oBowaKug";
- const ITEM_UID = "djHZa6_KptwK_aIlorfty1jIPgBYJZnQAZkIEJXfnkU";
- 
+//  const ITEM_UID = "djHZa6_KptwK_aIlorfty1jIPgBYJZnQAZkIEJXfnkU";
+const ITEM_UID = "djFD0V6AWU4JwmJT_-xeVppYTtfcC_Lt3m5-7JvCqP4";
 
 export default function OrderFormSection() {
   const { product, shipping, paymentNote, cta, box } = orderFormData;
@@ -188,14 +186,13 @@ export default function OrderFormSection() {
       const result = await res.json();
       if (!res.ok) throw new Error(result.message || "Order failed");
 
-      
+      setOrderRequestStatus(result.order_request_status);
 
       if (result.order_request_status === "invalid_order") {
         window.location.reload();
       } else if (result.order_request_status === "may_be_fake") {
         setErrorMessage("দুঃখিত! আপনার অর্ডার সিকিউরিটি চেকে আছে। কিছুক্ষণ অপেক্ষা করুন অথবা আমাদের সাথে যোগাযোগ করুন।");
       } else {
-         setOrderRequestStatus(result.order_request_status);
         setSuccessMessage(result.message || "✅ আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। ধন্যবাদ!");
       }
     } catch (err: any) {
@@ -262,7 +259,6 @@ export default function OrderFormSection() {
   }
 
   if (orderRequestStatus === "confirmed") {
-
     return (
       <Section id="order-section" paddedBottom className="max-w-4xl mx-auto">
         <Container>
@@ -273,15 +269,9 @@ export default function OrderFormSection() {
         </Container>
       </Section>
     );
-
-    
   }
 
-   
   return (
-
-
-    
     <Section id="order-section" paddedBottom className="max-w-4xl mx-auto">
       <Container>
         {/* Header */}
@@ -395,7 +385,6 @@ export default function OrderFormSection() {
             ✅ {successMessage}
           </div>
         )}
-
 
 
         {/* Main grid */}
