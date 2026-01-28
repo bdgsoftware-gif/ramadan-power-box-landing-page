@@ -25,6 +25,7 @@ export default function OrderFormSection() {
     contact_name: "",
     contact_number: "",
     address: "",
+    email: "" 
   });
 
   const [orderKey, setOrderKey] = useState<string | null>(null);
@@ -138,7 +139,7 @@ export default function OrderFormSection() {
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Update failed");
-
+ 
       setCart(data.cart);
       setCartItems(data.cart.items);
       setOrderForm(data.order_form);
@@ -196,7 +197,7 @@ export default function OrderFormSection() {
         setErrorMessage("দুঃখিত! আপনার অর্ডার সিকিউরিটি চেকে আছে। কিছুক্ষণ অপেক্ষা করুন অথবা আমাদের সাথে যোগাযোগ করুন।");
       } else {
          setOrderForm(result.order_form);
-     
+         setCart(result.cart);
          setOrderRequestStatus(result.order_request_status);
         setSuccessMessage(result.message || "✅ আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। ধন্যবাদ!");
       }
@@ -304,7 +305,7 @@ export default function OrderFormSection() {
         <div className="space-y-3 text-left">
             <div className="flex justify-between items-start font-anekBangla text-sm sm:text-base">
             <span className="text-gray-600 font-medium">Invoice Number:</span>
-            <span className="font-semibold text-gray-800 text-right">{order_form.invoice_number}</span>
+            <span className="font-semibold text-gray-800 text-right">{cart.invoice_number.toString()}</span>
           </div>
           <div className="flex justify-between items-start font-anekBangla text-sm sm:text-base">
             <span className="text-gray-600 font-medium">নাম:</span>
