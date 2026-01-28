@@ -7,6 +7,13 @@ import { gsap } from "../../animations/gsap.config";
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const sliderRef = useRef<HTMLDivElement | null>(null);
+  const marqueeTween = useRef<gsap.core.Tween | null>(null);
+  const isDragging = useRef(false);
+  const startX = useRef(0);
+  const currentX = useRef(0);
+  const lastX = useRef(0);
+  const velocity = useRef(0);
 
   const handleCTA = () => {
     const el = document.getElementById(heroData.cta.scrollTo);
@@ -27,8 +34,98 @@ export default function HeroSection() {
     return () => ctx.revert();
   }, []);
 
+  useLayoutEffect(() => {
+    if (!sliderRef.current) return;
+    const el = sliderRef.current;
+    const totalWidth = el.scrollWidth / 2;
+
+    // Create infinite loop marquee
+    marqueeTween.current = gsap.to(el, {
+      x: -totalWidth,
+      duration: 25, // Slower, smoother scroll
+      ease: "none",
+      repeat: -1,
+      modifiers: {
+        x: gsap.utils.unitize((x) => parseFloat(x) % totalWidth),
+      },
+    });
+
+    return () => {
+      marqueeTween.current?.kill();
+    };
+  }, []);
+
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!sliderRef.current) return;
+
+    isDragging.current = true;
+    startX.current = e.clientX;
+    currentX.current = e.clientX;
+    lastX.current = (gsap.getProperty(sliderRef.current, "x") as number) || 0;
+    velocity.current = 0;
+
+    // Pause auto-slide
+    marqueeTween.current?.pause();
+
+    // Add cursor feedback
+    sliderRef.current.style.cursor = "grabbing";
+  };
+
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDragging.current || !sliderRef.current) return;
+
+    e.preventDefault();
+
+    const delta = e.clientX - startX.current;
+    velocity.current = e.clientX - currentX.current;
+    currentX.current = e.clientX;
+
+    gsap.set(sliderRef.current, { x: lastX.current + delta });
+  };
+
+  const onPointerUp = () => {
+    if (!isDragging.current || !sliderRef.current) return;
+
+    isDragging.current = false;
+
+    // Add momentum/inertia based on drag velocity
+    const el = sliderRef.current;
+    const currentPos = gsap.getProperty(el, "x") as number;
+    const momentumDistance = velocity.current * 10; // Adjust multiplier for more/less momentum
+
+    gsap.to(el, {
+      x: currentPos + momentumDistance,
+      duration: 0.8,
+      ease: "power2.out",
+      onComplete: () => {
+        // Resume auto-slide after momentum animation
+        marqueeTween.current?.resume();
+      },
+    });
+
+    // Reset cursor
+    el.style.cursor = "grab";
+  };
+
+  const onPointerEnter = () => {
+    // Pause on hover for desktop
+    if (window.innerWidth >= 640) {
+      marqueeTween.current?.pause();
+    }
+  };
+
+  const onPointerLeave = () => {
+    if (!isDragging.current) {
+      // Resume auto-slide when leaving
+      marqueeTween.current?.resume();
+      if (sliderRef.current) {
+        sliderRef.current.style.cursor = "grab";
+      }
+    }
+  };
+
   return (
-    <Section className="relative bg-gradient-to-b from-[#FFFCF7] to-[#FFFAF1] min-h-[80dvh].">
+    <Section className="relative bg-gradient-to-b from-[#FFFCF7] to-[#FFFAF1] min-h-[80dvh]">
       {/* FULL BACKGROUND Pattern - Desktop only */}
       <div className="absolute inset-0 hidden md:flex items-center justify-center pointer-events-none opacity-40 w-full">
         <img
@@ -37,6 +134,8 @@ export default function HeroSection() {
           className="h-full w-full object-cover"
         />
       </div>
+
+      {/* FULL BACKGROUND Pattern - Mobile only */}
       <div className="absolute inset-0 flex md:hidden items-center justify-center pointer-events-none opacity-20 h-full">
         <img
           src={heroData.mobileHeroBg}
@@ -44,17 +143,18 @@ export default function HeroSection() {
           className="h-full w-full object-fill"
         />
       </div>
+
       <Container className=" z-10 max-w-8xl mx-auto">
         <div
           ref={sectionRef}
           className="relative flex items-start justify-center min-h-[80dvh]"
         >
-          {/* FULL BACKGROUND HERO IMAGE - Desktop only */}
-          <div className="absolute inset-0 top-1/4 hidden md:flex items-center justify-center pointer-events-none">
+          {/* Products Images */}
+          <div className="absolute lg:top-[38%] xl:top-1/3 xl:inset-0 2xl:top-1/4 2xl:inset-0 hidden md:flex items-center justify-center pointer-events-none">
             <img
               src={heroData.productImg}
               alt=""
-              className="h-full w-auto md:max-w-[85%] object-contain"
+              className="h-full w-auto md:max-w-[85%] lg:max-w-[80%] 2xl:max-w-[85%] object-contain"
             />
           </div>
           {/* TEXT BLOCK - Centered */}
@@ -124,17 +224,29 @@ export default function HeroSection() {
           {/* PRICE BADGE */}
           <div
             data-hero-animate
-            className="absolute left-4 top-6 hidden rotate-[-12deg] sm:block"
+            className="absolute lg:left-2 lg:top-0 xl:left-12 xl:top-0 2xl:left-4 2xl:top-6 hidden rotate-[-12deg] sm:block"
           >
-            <img className="h-56" src={heroData.priceBadge.src} alt="" />
+            <img
+              className="lg:h-44 xl:h-56"
+              src={heroData.priceBadge.src}
+              alt=""
+            />
           </div>
         </div>
       </Container>
 
       {/* MOBILE SLIDER */}
       <div className="mt-0 z-10 sm:hidden overflow-hidden">
-        <div className="flex w-max animate-marquee gap-4 px-4 hover:[animation-play-state:paused]">
-          {/* First Set of Items */}
+        <div
+          ref={sliderRef}
+          className="flex w-max gap-4 px-4 cursor-grab active:cursor-grabbing"
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerLeave={onPointerLeave}
+          onPointerEnter={onPointerEnter}
+          style={{ touchAction: "pan-y" }} // Allow vertical scroll, prevent horizontal
+        >
           {[...heroData.products, ...heroData.products].map((item, index) => (
             <div
               key={`${item.id}-${index}`}
@@ -143,13 +255,13 @@ export default function HeroSection() {
               <span className="mb-2 inline-block rounded-full border border-white/40 bg-white/30 px-3 py-1 text-sm font-bold uppercase tracking-wider text-green-900 backdrop-blur-md shadow-sm">
                 {item.badge}
               </span>
-              <div className="relative">
-                <img
-                  src={item.image}
-                  alt={item.badge}
-                  className="mx-auto h-52 w-auto object-contain drop-shadow-md"
-                />
-              </div>
+
+              <img
+                src={item.image}
+                alt={item.badge}
+                className="mx-auto h-52 w-auto object-contain drop-shadow-md pointer-events-none"
+                draggable="false"
+              />
             </div>
           ))}
         </div>
