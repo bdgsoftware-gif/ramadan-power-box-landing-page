@@ -142,11 +142,7 @@ export default function OrderFormSection() {
       return;
     }
 
-    if (
-      !order_form.contact_name ||
-      !order_form.contact_number ||
-      !order_form.address
-    ) {
+    if (!order_form.contact_name || !order_form.contact_number || !order_form.address) {
       setErrorMessage("সব তথ্য পূরণ করুন");
       return;
     }
@@ -176,14 +172,9 @@ export default function OrderFormSection() {
       if (result.order_request_status === "invalid_order") {
         window.location.reload();
       } else if (result.order_request_status === "may_be_fake") {
-        setErrorMessage(
-          "দুঃখিত! আপনার অর্ডার সিকিউরিটি চেকে আছে। কিছুক্ষণ অপেক্ষা করুন অথবা আমাদের সাথে যোগাযোগ করুন।",
-        );
+        setErrorMessage("দুঃখিত! আপনার অর্ডার সিকিউরিটি চেকে আছে। কিছুক্ষণ অপেক্ষা করুন অথবা আমাদের সাথে যোগাযোগ করুন।");
       } else {
-        setSuccessMessage(
-          result.message ||
-            "✅ আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। ধন্যবাদ!",
-        );
+        setSuccessMessage(result.message || "✅ আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। ধন্যবাদ!");
       }
     } catch (err: any) {
       setErrorMessage(err.message);
@@ -197,7 +188,7 @@ export default function OrderFormSection() {
      ====================== */
   const handleQtyChange = (uid: string, newQty: number) => {
     const updated = cartItems.map((item) =>
-      item.uid === uid ? { ...item, quantity: Math.max(1, newQty) } : item,
+      item.uid === uid ? { ...item, quantity: Math.max(1, newQty) } : item
     );
     setCartItems(updated);
     updateOrder(updated);
@@ -253,12 +244,8 @@ export default function OrderFormSection() {
       <Section id="order-section" paddedBottom className="max-w-4xl mx-auto">
         <Container>
           <div className="text-center py-20 border rounded-lg bg-white font-anekBangla shadow-sm">
-            <h2 className="text-2xl font-bold text-green-700">
-              Congratulations!
-            </h2>
-            <p className="mt-2 text-gray-600 text-lg">
-              Your order is placed successfully.
-            </p>
+            <h2 className="text-2xl font-bold text-green-700">Congratulations!</h2>
+            <p className="mt-2 text-gray-600 text-lg">Your order is placed successfully.</p>
           </div>
         </Container>
       </Section>
@@ -356,9 +343,7 @@ export default function OrderFormSection() {
                 ))}
 
                 <div className="font-bold mt-2 font-anekBangla text-xl text-text-dark">
-                  <span className="font-bengali text-base font-extrabold">
-                    ৳
-                  </span>
+                  <span className="font-bengali text-base font-extrabold">৳</span>
                   {subtotal.toLocaleString("bn-BD")}
                 </div>
               </div>
@@ -387,13 +372,7 @@ export default function OrderFormSection() {
           <div>
             <h3 className="mb-6 text-2xl font-medium">অর্ডারের তথ্য</h3>
 
-            <form
-              className="space-y-4 pr-3"
-              onSubmit={(e) => {
-                e.preventDefault();
-                submitOrder();
-              }}
-            >
+            <form className="space-y-4 pr-3" onSubmit={(e) => { e.preventDefault(); submitOrder(); }}>
               {/* Name Field */}
               <div className="flex flex-col gap-2">
                 <label className="font-anekBangla text-gray-700 font-medium">
@@ -404,12 +383,7 @@ export default function OrderFormSection() {
                   className="w-full rounded-md border border-gray-300 px-4 py-3 font-anekBangla outline-none transition-all focus:border-[#1B634C] focus:ring-2 focus:ring-[#1B634C]/20 shadow-sm"
                   placeholder="আপনার নাম লিখুন"
                   value={order_form.contact_name}
-                  onChange={(e) =>
-                    setOrderForm({
-                      ...order_form,
-                      contact_name: e.target.value,
-                    })
-                  }
+                  onChange={(e) => setOrderForm({ ...order_form, contact_name: e.target.value })}
                   required
                 />
               </div>
@@ -425,12 +399,7 @@ export default function OrderFormSection() {
                   className="w-full rounded-md border border-gray-300 px-4 py-3 font-anekBangla outline-none transition-all focus:border-[#1B634C] focus:ring-2 focus:ring-[#1B634C]/20 shadow-sm"
                   placeholder="০১৮XXXXXXXX"
                   value={order_form.contact_number}
-                  onChange={(e) =>
-                    setOrderForm({
-                      ...order_form,
-                      contact_number: e.target.value,
-                    })
-                  }
+                  onChange={(e) => setOrderForm({ ...order_form, contact_number: e.target.value })}
                   required
                 />
               </div>
@@ -445,9 +414,7 @@ export default function OrderFormSection() {
                   className="w-full rounded-md border border-gray-300 px-4 py-3 font-anekBangla outline-none transition-all focus:border-[#1B634C] focus:ring-2 focus:ring-[#1B634C]/20 shadow-sm"
                   placeholder="গ্রাম/মহল্লা, রোড নম্বর, থানা ও জেলা লিখুন"
                   value={order_form.address}
-                  onChange={(e) =>
-                    setOrderForm({ ...order_form, address: e.target.value })
-                  }
+                  onChange={(e) => setOrderForm({ ...order_form, address: e.target.value })}
                   required
                 />
               </div>
