@@ -5,8 +5,10 @@ import Container from "../ui/Container";
 import { faqData } from "../../data/faq.data";
 
 export default function FAQSection() {
-  const [active, setActive] = useState(0);
-  const answerRefs = useRef<HTMLDivElement[]>([]);
+  const [active, setActive] = useState<number>(0);
+
+  // ✅ allow nulls – REQUIRED for React ref callbacks
+  const answerRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useLayoutEffect(() => {
     answerRefs.current.forEach((el, i) => {
@@ -17,12 +19,14 @@ export default function FAQSection() {
           height: "auto",
           opacity: 1,
           duration: 0.3,
+          ease: "power2.out",
         });
       } else {
         gsap.to(el, {
           height: 0,
           opacity: 0,
           duration: 0.3,
+          ease: "power2.out",
         });
       }
     });
@@ -35,15 +39,16 @@ export default function FAQSection() {
           {faqData.title}
         </h2>
 
-        <div className="space-y-4 max-w-4xl mx-auto">
+        <div className="mx-auto max-w-4xl space-y-4">
           {faqData.items.map((item, i) => (
             <div
               key={i}
               className="rounded-xl border border-amber-300 bg-gradient-to-t from-[#ffdb8e5b] to-[#cfaf6ab2] px-6 py-4"
             >
               <button
+                type="button"
                 onClick={() => setActive(i === active ? -1 : i)}
-                className="flex w-full items-center justify-between text-left font-semibold font-anekBangla text-lg"
+                className="flex w-full items-center justify-between text-left font-anekBangla text-lg font-semibold"
               >
                 <span>
                   Q{i + 1}: {item.question}
@@ -55,8 +60,10 @@ export default function FAQSection() {
               </button>
 
               <div
-                ref={(el) => (answerRefs.current[i] = el!)}
-                className="overflow-hiddentext-text-primary text-lg"
+                ref={(el) => {
+                  answerRefs.current[i] = el;
+                }}
+                className="overflow-hidden text-text-primary text-lg"
                 style={{
                   height: item.open ? "auto" : 0,
                   opacity: item.open ? 1 : 0,
