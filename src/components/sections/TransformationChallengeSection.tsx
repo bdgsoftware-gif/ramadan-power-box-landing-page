@@ -65,9 +65,9 @@ export default function TransformationChallengeSection() {
               ))}
             </ul>
           </div>
-          <div className="hidden lg:block col-span-1"></div>
+          <div className="hidden xl:block col-span-1"></div>
           {/* Right Images */}
-          <div className="grid col-span-3 grid-cols-3 gap-3">
+          <div className="grid col-span-3 lg:col-span-4 xl:col-span-3 grid-cols-3 gap-3">
             {data.images.map((src, i) => (
               <img
                 key={i}
@@ -96,20 +96,24 @@ export default function TransformationChallengeSection() {
             {data.deadline.notes.map((note, i) => (
               <li
                 key={i}
-                className="flex items-center gap-2 text-text-primary text-lg font-anekBangla"
+                className="flex items-start gap-2 text-text-primary text-lg font-anekBangla"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-8 h-8"
-                  viewBox="0 0 36 36"
-                  fill="none"
-                >
-                  <path
-                    d="M19 8C12.9249 8 8 12.9249 8 19C8 25.0754 12.9249 30 19 30C25.0754 30 30 25.0754 30 19C30 12.9249 25.0754 8 19 8ZM19 28.6467C13.6928 28.6467 9.375 24.3072 9.375 19C9.375 13.6928 13.6928 9.37496 19 9.37496C24.3072 9.37496 28.625 13.6928 28.625 19C28.625 24.3071 24.3072 28.6467 19 28.6467ZM23.39 14.975L16.9361 21.4695L14.0297 18.5631C13.7612 18.2946 13.326 18.2946 13.0572 18.5631C12.7888 18.8316 12.7888 19.2667 13.0572 19.5352L16.46 22.9383C16.7285 23.2065 17.1637 23.2065 17.4325 22.9383C17.4634 22.9074 17.4899 22.8737 17.514 22.8387L24.3628 15.9475C24.631 15.679 24.631 15.2438 24.3628 14.975C24.094 14.7066 23.6588 14.7066 23.39 14.975Z"
-                    fill="#E9BA01"
-                  />
-                </svg>
-                {note}
+                {/* Icon - Fixed size container */}
+                <div className="flex-shrink-0 w-8 h-8">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="md:hidden block w-full h-full"
+                    viewBox="0 0 36 36"
+                    fill="none"
+                  >
+                    <path
+                      d="M19 8C12.9249 8 8 12.9249 8 19C8 25.0754 12.9249 30 19 30C25.0754 30 30 25.0754 30 19C30 12.9249 25.0754 8 19 8ZM19 28.6467C13.6928 28.6467 9.375 24.3072 9.375 19C9.375 13.6928 13.6928 9.37496 19 9.37496C24.3072 9.37496 28.625 13.6928 28.625 19C28.625 24.3071 24.3072 28.6467 19 28.6467ZM23.39 14.975L16.9361 21.4695L14.0297 18.5631C13.7612 18.2946 13.326 18.2946 13.0572 18.5631C12.7888 18.8316 12.7888 19.2667 13.0572 19.5352L16.46 22.9383C16.7285 23.2065 17.1637 23.2065 17.4325 22.9383C17.4634 22.9074 17.4899 22.8737 17.514 22.8387L24.3628 15.9475C24.631 15.679 24.631 15.2438 24.3628 14.975C24.094 14.7066 23.6588 14.7066 23.39 14.975Z"
+                      fill="#E9BA01"
+                    />
+                  </svg>
+                </div>
+
+                <span className="flex-1">{note}</span>
               </li>
             ))}
           </ul>

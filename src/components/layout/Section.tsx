@@ -18,8 +18,8 @@ export default function Section({
     <section
       id={id}
       className={clsx(
-        "py-12 sm:py-20",
-        paddedBottom && "pb-28 sm:pb-20",
+        "py-12 lg:py-20",
+        paddedBottom && "pb-28 xl:pb-20",
         className,
       )}
     >

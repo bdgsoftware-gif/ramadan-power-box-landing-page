@@ -84,7 +84,7 @@ export default function OrderFormSection() {
               order_key: dKey,
               items: [{ uid: ITEM_UID, quantity: 1 }],
             }),
-          }
+          },
         );
 
         const data = await res.json();
@@ -119,7 +119,7 @@ export default function OrderFormSection() {
             items: updatedItems,
             ...order_form,
           }),
-        }
+        },
       );
 
       const data = await res.json();
@@ -161,7 +161,7 @@ export default function OrderFormSection() {
             order_key: orderKey,
             ...order_form,
           }),
-        }
+        },
       );
 
       const result = await res.json();
@@ -316,16 +316,25 @@ export default function OrderFormSection() {
 
                 {/* Quantity Selector - Dynamic from API */}
                 {cartItems.map((item) => (
-                  <div key={item.uid} className="inline-flex items-center gap-2 mt-3 border rounded-md bg-white">
+                  <div
+                    key={item.uid}
+                    className="inline-flex items-center gap-2 mt-3 border rounded-md bg-white"
+                  >
                     <button
-                      onClick={() => handleQtyChange(item.uid, item.quantity - 1)}
+                      onClick={() =>
+                        handleQtyChange(item.uid, item.quantity - 1)
+                      }
                       className="h-8 w-8 rounded-l border-r hover:bg-gray-50 transition-colors"
                     >
                       −
                     </button>
-                    <span className="w-8 text-center font-medium">{item.quantity}</span>
+                    <span className="w-8 text-center font-medium">
+                      {item.quantity}
+                    </span>
                     <button
-                      onClick={() => handleQtyChange(item.uid, item.quantity + 1)}
+                      onClick={() =>
+                        handleQtyChange(item.uid, item.quantity + 1)
+                      }
                       className="h-8 w-8 rounded-r border-l hover:bg-gray-50 transition-colors"
                     >
                       +
@@ -547,6 +556,14 @@ export default function OrderFormSection() {
               </div>
             </div>
           </div>
+        </div>
+
+        <div className="w-full max-w-7xl mx-auto mt-5">
+          <img
+            src="/src/assets/images/check-out-security.webp"
+            alt="Security Checkout"
+            className="w-full h-auto object-contain"
+          />
         </div>
       </Container>
     </Section>
