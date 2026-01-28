@@ -6,9 +6,11 @@ import Button from "../ui/Button";
 import { orderFormData } from "../../data/orderForm.data";
 
 // API Constants
-const BASE_URL = "https://bionic.garden/";
+// const BASE_URL = "https://bionic.garden/";
+ const BASE_URL = 'http://localhost:9100/';
 const ACCESS_KEY = "djFHwT5SlOnEVlCT2NSFr-WRxsXKdxliWTrVJJpHGyVju9oBowaKug";
-const ITEM_UID = "djHZa6_KptwK_aIlorfty1jIPgBYJZnQAZkIEJXfnkU";
+// const ITEM_UID = "djHZa6_KptwK_aIlorfty1jIPgBYJZnQAZkIEJXfnkU";
+const ITEM_UID = "djFD0V6AWU4JwmJT_-xeVppYTtfcC_Lt3m5-7JvCqP4";
 
 export default function OrderFormSection() {
   const { product, shipping, paymentNote, cta, box } = orderFormData;
@@ -65,6 +67,16 @@ export default function OrderFormSection() {
     return key;
   };
 
+    const validContact = (contact: string) => {
+  // Bangladesh mobile: 01XXXXXXXXX | 8801XXXXXXXXX | +8801XXXXXXXXX
+        let mobileReg = /^(?:\+?88)?01[3-9]\d{8}$/;
+
+        // Email validation
+        let emailReg = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        return mobileReg.test(contact) || emailReg.test(contact);
+    };
+  
   /* =====================
      API: INITIATE ORDER
      ====================== */
@@ -115,7 +127,7 @@ export default function OrderFormSection() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            order_key: deviceKey,
+            order_key: orderKey,
             items: updatedItems,
             ...order_form,
           }),
@@ -142,9 +154,16 @@ export default function OrderFormSection() {
       return;
     }
 
+    
     if (!order_form.contact_name || !order_form.contact_number || !order_form.address) {
       setErrorMessage("সব তথ্য পূরণ করুন");
       return;
+    }
+
+ 
+   if (!validContact( order_form.contact_number )) {
+            setErrorMessage("অনুগ্রহ করে আপনার সঠিক মোবাইল নম্বরটি প্রদান করুন।");
+                return;
     }
 
     setLoading(true);
@@ -260,20 +279,7 @@ export default function OrderFormSection() {
           অর্ডার করতে নিচের ফর্ম পূরণ করুন
         </div>
 
-        {/* Error Message */}
-        {errorMessage && (
-          <div className="mb-6 rounded-lg bg-red-50 border-2 border-red-200 px-5 py-4 font-anekBangla text-red-700 font-medium">
-            ⚠️ {errorMessage}
-          </div>
-        )}
-
-        {/* Success Message */}
-        {successMessage && (
-          <div className="mb-6 rounded-lg bg-green-50 border-2 border-green-200 px-5 py-4 font-anekBangla text-green-700 font-medium">
-            ✅ {successMessage}
-          </div>
-        )}
-
+       
         <div className="my-5">
           <span className="font-anekBangla text-2xl font-light text-text-primary">
             আপনার অর্ডার
@@ -365,6 +371,21 @@ export default function OrderFormSection() {
             </div>
           </div>
         </div>
+
+          {/* Error Message */}
+        {errorMessage && (
+          <div className="mb-6 rounded-lg bg-red-50 border-2 border-red-200 px-5 py-4 font-anekBangla text-red-700 font-medium">
+            ⚠️ {errorMessage}
+          </div>
+        )}
+
+        {/* Success Message */}
+        {successMessage && (
+          <div className="mb-6 rounded-lg bg-green-50 border-2 border-green-200 px-5 py-4 font-anekBangla text-green-700 font-medium">
+            ✅ {successMessage}
+          </div>
+        )}
+
 
         {/* Main grid */}
         <div className="grid gap-10 md:grid-cols-2">
