@@ -19,9 +19,27 @@ export const heroData = {
 
   products: [
     {
-      id: "dates",
-      image: "/src/assets/images/dates.png",
-      badge: "তিন প্রকার প্রিমিয়াম খেজুর",
+      id: "dates-premium",
+      image: "/src/assets/images/ramadan-power-pack.png",
+      badge: "রমাদান পাওয়ার বক্স",
+      desktop: { bottom: "8%", left: "50%", translateX: "-50%" },
+    },
+    {
+      id: "dates-kalmi",
+      image: "/src/assets/images/kalmi.png",
+      badge: "কালমি",
+      desktop: { bottom: "8%", left: "50%", translateX: "-50%" },
+    },
+    {
+      id: "dates-mariyam",
+      image: "/src/assets/images/mariyam.png",
+      badge: "মরিয়ম",
+      desktop: { bottom: "8%", left: "50%", translateX: "-50%" },
+    },
+    {
+      id: "dates-sukkari",
+      image: "/src/assets/images/sukkari-home.png",
+      badge: "সুক্কারি",
       desktop: { bottom: "8%", left: "50%", translateX: "-50%" },
     },
     {
@@ -37,15 +55,9 @@ export const heroData = {
       desktop: { top: "70%", left: "32%" },
     },
     {
-      id: "dates",
-      image: "/src/assets/images/dates.png",
-      badge: "তিন প্রকার প্রিমিয়াম খেজুর",
-      desktop: { bottom: "8%", left: "50%", translateX: "-50%" },
-    },
-    {
       id: "salt",
       image: "/src/assets/images/salt.png",
-      badge: "পিংক হিমালয়ান সল্ট",
+      badge: "পিঙ্ক অউরা সল্ট",
       desktop: { top: "60%", right: "12%" },
     },
     {
@@ -55,9 +67,9 @@ export const heroData = {
       desktop: { top: "52%", right: "8%" },
     },
     {
-      id: "dates",
-      image: "/src/assets/images/dates.png",
-      badge: "তিন প্রকার প্রিমিয়াম খেজুর",
+      id: "dates-premium",
+      image: "/src/assets/images/ramadan-power-pack.png",
+      badge: "রমাদান পাওয়ার বক্স",
       desktop: { bottom: "8%", left: "50%", translateX: "-50%" },
     },
   ],

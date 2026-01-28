@@ -17,8 +17,7 @@ export default function PriceBreakdownSection() {
       <Container>
         {/* Title */}
         <h2 className="mb-12 text-center font-anekBangla text-text-primary text-3xl font-bold">
-          {data.title}{" "}
-          <span className="text-text-accent">মোট মূল্য দাঁড়ায়</span>
+          {data.title} <span className="text-text-accent">১২,৪২৫ টাকা</span>
         </h2>
 
         {/* Table */}
