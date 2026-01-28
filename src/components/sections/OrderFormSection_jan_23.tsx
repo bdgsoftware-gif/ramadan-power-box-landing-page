@@ -186,14 +186,13 @@ export default function OrderFormSection() {
       const result = await res.json();
       if (!res.ok) throw new Error(result.message || "Order failed");
 
-      
+      setOrderRequestStatus(result.order_request_status);
 
       if (result.order_request_status === "invalid_order") {
         window.location.reload();
       } else if (result.order_request_status === "may_be_fake") {
         setErrorMessage("দুঃখিত! আপনার অর্ডার সিকিউরিটি চেকে আছে। কিছুক্ষণ অপেক্ষা করুন অথবা আমাদের সাথে যোগাযোগ করুন।");
       } else {
-         setOrderRequestStatus(result.order_request_status);
         setSuccessMessage(result.message || "✅ আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। ধন্যবাদ!");
       }
     } catch (err: any) {
@@ -260,7 +259,6 @@ export default function OrderFormSection() {
   }
 
   if (orderRequestStatus === "confirmed") {
-
     return (
       <Section id="order-section" paddedBottom className="max-w-4xl mx-auto">
         <Container>
@@ -271,15 +269,9 @@ export default function OrderFormSection() {
         </Container>
       </Section>
     );
-
-    
   }
 
-   
   return (
-
-
-    
     <Section id="order-section" paddedBottom className="max-w-4xl mx-auto">
       <Container>
         {/* Header */}
@@ -393,7 +385,6 @@ export default function OrderFormSection() {
             ✅ {successMessage}
           </div>
         )}
-
 
 
         {/* Main grid */}
