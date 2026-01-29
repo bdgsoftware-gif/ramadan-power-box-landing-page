@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef } from "react";
 import { productDetailsData } from "../../data/productDetails.data";
-import { productIcons } from "../icons/productIcons";
+import { productIcons } from "../../data/productIcons";
 import Section from "../layout/Section";
 import Container from "../ui/Container";
 import Button from "../ui/Button";
@@ -43,29 +43,24 @@ export default function ProductDetailsSection() {
 
           {/* Items Grid */}
           <div className="grid gap-5 sm:grid-cols-3">
-            {productDetailsData.items.map((item, index) => {
+            {productDetailsData.items.map((item) => {
               const IconComponent = productIcons[item.icon];
-
               return (
                 <div
-                  key={index}
+                  key={item.id}
                   data-item
                   className={[
                     "flex items-start gap-3 rounded-xl border border-border-accent bg-gradient-to-b from-[#FEF9C2] to-[#FEFCE8] px-5 py-4",
-                    item.highlight
-                      ? "border-2 border-border-accent font-semibold"
-                      : "",
+                    item.highlight ? "md:border-2 md:font-semibold" : "",
                   ].join(" ")}
                 >
-                  {/* Icon Container */}
-                  <div className="flex-shrink-0 w-7 h-7 mt-0.5">
+                  <div className="flex-shrink-0 w-6 h-6">
                     <IconComponent
-                      className={`w-full h-full ${item.highlight ? "text-[#D08700]" : "text-[##00A63E]"}`}
+                      className={`w-full h-full ${item.highlight ? "text-[#166534] md:text-border-accent font-semibold" : "text-[#166534]"}`}
                     />
                   </div>
 
-                  {/* Text */}
-                  <p className="text-xl font-anekBangla font-semibold flex-1 leading-tight">
+                  <p className="text-xl font-anekBangla font-semibold flex-1">
                     {item.text}
                   </p>
                 </div>

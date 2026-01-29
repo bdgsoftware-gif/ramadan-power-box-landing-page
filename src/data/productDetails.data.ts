@@ -1,4 +1,4 @@
-import { IconKey } from "../components/icons/productIcons";
+import type { IconKey } from "./productIcons";
 
 export interface ProductItem {
   id: string;
@@ -25,7 +25,7 @@ export const productDetailsData = {
     {
       id: "tracker-30-days",
       icon: "calendar",
-      text: "“রুপান্তরের ৩০ দিন ট্রাকার।",
+      text: "রুপান্তরের ৩০ দিন ট্রাকার।",
     },
     {
       id: "video-guideline",
@@ -45,7 +45,7 @@ export const productDetailsData = {
     { id: "sadakah", icon: "heart", text: "প্রতি বক্সে ৳৫০ সাদাকাহ" },
     {
       id: "free-delivery",
-      icon: "truck",
+      icon: "travel",
       text: "সমগ্র বাংলাদেশে ফ্রি হোম ডেলিভারি",
     },
   ] as ProductItem[],

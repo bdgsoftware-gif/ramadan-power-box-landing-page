@@ -6,23 +6,12 @@ import Button from "../ui/Button";
 import { orderFormData } from "../../data/orderForm.data";
 
 // API Constants
-<<<<<<< HEAD
-const ITEM_UID = "djFD0V6AWU4JwmJT_-xeVppYTtfcC_Lt3m5-7JvCqP4";
-const BASE_URL = "http://localhost:9100/";
-
-//  const BASE_URL = "https://bionic.garden/";
-const ACCESS_KEY = "djFHwT5SlOnEVlCT2NSFr-WRxsXKdxliWTrVJJpHGyVju9oBowaKug";
-//  const ITEM_UID = "djHZa6_KptwK_aIlorfty1jIPgBYJZnQAZkIEJXfnkU";
-=======
 // const ITEM_UID = "djFD0V6AWU4JwmJT_-xeVppYTtfcC_Lt3m5-7JvCqP4";
 // const BASE_URL = 'http://localhost:9100/';
 
- const BASE_URL = "https://bionic.garden/";
- const ITEM_UID = "djHZa6_KptwK_aIlorfty1jIPgBYJZnQAZkIEJXfnkU";
- const ACCESS_KEY = "djFHwT5SlOnEVlCT2NSFr-WRxsXKdxliWTrVJJpHGyVju9oBowaKug";
-  
- 
->>>>>>> 24c2e2a350a3467391998b3e50d99e689496b49c
+const BASE_URL = "https://bionic.garden/";
+const ITEM_UID = "djHZa6_KptwK_aIlorfty1jIPgBYJZnQAZkIEJXfnkU";
+const ACCESS_KEY = "djFHwT5SlOnEVlCT2NSFr-WRxsXKdxliWTrVJJpHGyVju9oBowaKug";
 
 export default function OrderFormSection() {
   const { product, shipping, paymentNote, cta, box } = orderFormData;
