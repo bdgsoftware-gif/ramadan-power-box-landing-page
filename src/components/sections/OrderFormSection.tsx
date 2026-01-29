@@ -6,12 +6,12 @@ import Button from "../ui/Button";
 import { orderFormData } from "../../data/orderForm.data";
 
 // API Constants
-// const ITEM_UID = "djFD0V6AWU4JwmJT_-xeVppYTtfcC_Lt3m5-7JvCqP4";
-// const BASE_URL = 'http://localhost:9100/';
+const ITEM_UID = "djFD0V6AWU4JwmJT_-xeVppYTtfcC_Lt3m5-7JvCqP4";
+const BASE_URL = 'http://localhost:9100/';
 
- const BASE_URL = "https://bionic.garden/";
+//  const BASE_URL = "https://bionic.garden/";
 const ACCESS_KEY = "djFHwT5SlOnEVlCT2NSFr-WRxsXKdxliWTrVJJpHGyVju9oBowaKug";
- const ITEM_UID = "djHZa6_KptwK_aIlorfty1jIPgBYJZnQAZkIEJXfnkU";
+//  const ITEM_UID = "djHZa6_KptwK_aIlorfty1jIPgBYJZnQAZkIEJXfnkU";
  
 
 export default function OrderFormSection() {
@@ -25,6 +25,7 @@ export default function OrderFormSection() {
     contact_name: "",
     contact_number: "",
     address: "",
+    email: "" 
   });
 
   const [orderKey, setOrderKey] = useState<string | null>(null);
@@ -138,7 +139,7 @@ export default function OrderFormSection() {
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Update failed");
-
+ 
       setCart(data.cart);
       setCartItems(data.cart.items);
       setOrderForm(data.order_form);
@@ -188,13 +189,15 @@ export default function OrderFormSection() {
       const result = await res.json();
       if (!res.ok) throw new Error(result.message || "Order failed");
 
-      
+      console.log("Order Response: " +  result);
 
       if (result.order_request_status === "invalid_order") {
         window.location.reload();
       } else if (result.order_request_status === "may_be_fake") {
         setErrorMessage("দুঃখিত! আপনার অর্ডার সিকিউরিটি চেকে আছে। কিছুক্ষণ অপেক্ষা করুন অথবা আমাদের সাথে যোগাযোগ করুন।");
       } else {
+         setOrderForm(result.order_form);
+         setCart(result.cart);
          setOrderRequestStatus(result.order_request_status);
         setSuccessMessage(result.message || "✅ আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। ধন্যবাদ!");
       }
@@ -264,14 +267,118 @@ export default function OrderFormSection() {
   if (orderRequestStatus === "confirmed") {
 
     return (
-      <Section id="order-section" paddedBottom className="max-w-4xl mx-auto">
-        <Container>
-          <div className="text-center py-20 border rounded-lg bg-white font-anekBangla shadow-sm">
-            <h2 className="text-2xl font-bold text-green-700">Congratulations!</h2>
-            <p className="mt-2 text-gray-600 text-lg">Your order is placed successfully.</p>
+   <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+  <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-2xl">
+    {/* Close Button */}
+    <a href="https://bionic.garden/ramadan-power-box/" className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-all duration-200 hover:scale-110">
+      <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </a>
+    {/* Modal Content */}
+    <div className="p-6 sm:p-10 md:p-12 text-center">
+      {/* TOP ICON */}
+      <div className="mb-6 flex justify-center">
+        <div className="flex h-20 w-20 sm:h-24 sm:w-24 items-center justify-center rounded-full border-4 border-green-600 bg-green-50">
+          <span className="text-4xl sm:text-5xl text-green-600">✔</span>
+        </div>
+      </div>
+      {/* TITLE */}
+      <h2 className="mb-3 font-anekBangla text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 leading-tight">
+        ✨ অর্ডার গ্রহণ করা হয়েছে আলহামদুলিল্লাহ
+      </h2>
+      {/* SUB TEXT */}
+      <p className="mx-auto max-w-xl font-anekBangla text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed">
+        ধন্যবাদ! আপনার "Bionic Ramadan Power Box" অর্ডারটি সফলভাবে সাবমিট হয়েছে
+      </p>
+      {/* INFO BADGE */}
+      <div className="mt-6 inline-flex items-center gap-2 rounded-lg bg-green-50 border border-green-200 px-4 sm:px-5 py-2.5 sm:py-3 font-anekBangla text-xs sm:text-sm md:text-base font-medium text-green-700">
+        <span className="text-lg sm:text-xl">🚚</span>
+        <span>আমাদের টিম খুব শীঘ্রই আপনাকে কল করে অর্ডার কনফার্ম করবে ইনশাআল্লাহ</span>
+      </div>
+      {/* ORDER SUMMARY */}
+      <div className="mt-8 rounded-xl border-2 border-green-100 bg-gradient-to-br from-green-50/50 to-green-50/30 p-5 sm:p-6">
+        <h3 className="mb-4 font-anekBangla text-base sm:text-lg font-semibold text-gray-800 flex items-center justify-center gap-2">
+          <span className="text-xl">📦</span>
+          <span>অর্ডার সামারি</span>
+        </h3>
+        <div className="space-y-3 text-left">
+            <div className="flex justify-between items-start font-anekBangla text-sm sm:text-base">
+            <span className="text-gray-600 font-medium">Invoice Number:</span>
+            <span className="font-semibold text-gray-800 text-right">{cart.invoice_number.toString()}</span>
           </div>
-        </Container>
-      </Section>
+          <div className="flex justify-between items-start font-anekBangla text-sm sm:text-base">
+            <span className="text-gray-600 font-medium">নাম:</span>
+            <span className="font-semibold text-gray-800 text-right">{order_form.contact_name}</span>
+          </div>
+          <div className="flex justify-between items-start font-anekBangla text-sm sm:text-base">
+            <span className="text-gray-600 font-medium">ফোন:</span>
+            <span className="font-semibold text-gray-800 text-right">{order_form.contact_number}</span>
+          </div>
+          <div className="flex justify-between items-start font-anekBangla text-sm sm:text-base">
+            <span className="text-gray-600 font-medium">পণ্য:</span>
+            <span className="font-semibold text-gray-800 text-right max-w-[60%]">Bionic Ramadan Power Box</span>
+          </div>
+          <div className="flex justify-between items-start font-anekBangla text-sm sm:text-base">
+            <span className="text-gray-600 font-medium">পরিমাণ:</span>
+            <span className="font-semibold text-gray-800">   
+
+ {cartItems.map((item) => (
+                  <div
+                    key={item.uid}
+                    className="inline-flex items-center gap-2 mt-3 border rounded-md bg-white"
+                  >
+                   {item.quantity }
+                  </div>
+                ))}
+
+
+
+            </span>
+          </div>
+          <div className="border-t-2 border-dashed border-green-200 pt-3 flex justify-between items-center font-anekBangla text-base sm:text-lg md:text-xl font-bold">
+            <span className="text-gray-800">মোট মূল্য:</span>
+            <span className="text-green-700">৳{total.toLocaleString("bn-BD")}</span>
+          </div>
+        </div>
+      </div>
+      {/* IMPORTANT NOTICE */}
+      <div className="mt-8 rounded-xl border-2 border-dashed border-green-600 bg-white p-5 sm:p-6 text-left shadow-sm">
+        <h4 className="mb-4 font-anekBangla text-sm sm:text-base md:text-lg font-semibold text-gray-800 flex items-start gap-2">
+          <span className="text-xl flex-shrink-0">📌</span>
+          <span>গুরুত্বপূর্ণ নির্দেশনা (অনুগ্রহ করে পড়ুন)</span>
+        </h4>
+        <ul className="space-y-3 font-anekBangla text-xs sm:text-sm md:text-base text-gray-600">
+          <li className="flex items-start gap-2">
+            <span className="text-green-600 flex-shrink-0 font-bold text-base">✔</span>
+            <span className="leading-relaxed">কলটি ধরবেন ইনশাআল্লাহ, কনফার্মেশন না হলে ডেলিভারি প্রসেস শুরু হবে না</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-green-600 flex-shrink-0 font-bold text-base">✔</span>
+            <span className="leading-relaxed">আপনার ফোন অন রাখুন এবং নম্বরটি ভুল হলে ঠিক করুন</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-green-600 flex-shrink-0 font-bold text-base">✔</span>
+            <span className="leading-relaxed">প্রোডাক্ট হাতে পেয়ে দেখে টাকা পেমেন্ট করবেন (ক্যাশ অন ডেলিভারি)</span>
+          </li>
+        </ul>
+        <div className="mt-5 rounded-lg bg-green-50 border border-green-200 p-3 sm:p-4">
+          <div className="flex flex-wrap items-center justify-center gap-2 font-anekBangla text-xs sm:text-sm md:text-base font-semibold text-green-700">
+            <span className="text-lg">📞</span>
+            <span>কল / WhatsApp করুন:</span>
+            <a href="tel:+8801733358158" className="hover:underline text-green-800">
+              +88017 333 58158
+            </a>
+          </div>
+        </div>
+      </div>
+      {/* Close Button */}
+      <button className="mt-8 w-full rounded-xl bg-gradient-to-r from-[#129369] to-[#1B634C] px-6 py-3.5 sm:py-4 font-anekBangla text-base sm:text-lg font-semibold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
+        বন্ধ করুন
+      </button>
+    </div>
+  </div>
+</div>
     );
 
     
@@ -508,7 +615,7 @@ export default function OrderFormSection() {
                   Total
                 </span>
                 <span className="font-anekBangla text-text-primary font-medium text-lg">
-                  ৳{total.toLocaleString("bn-BD")}
+                  ৳{total.toLocaleString("bn-BD")} 
                 </span>
               </div>
 
