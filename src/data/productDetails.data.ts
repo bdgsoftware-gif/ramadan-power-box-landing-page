@@ -18,10 +18,10 @@ export const productDetailsData = {
     {
       id: "vital-mix",
       icon: "gift",
-      text: "ভাইটাল মিক্স (205g) উপহার",
+      text: "ভাইটাল মিক্স (205g) - উপহার",
       highlight: true,
     },
-    { id: "pink-salt", icon: "salt", text: "পিঙ্ক অউরা সল্ট উপহার" },
+    { id: "pink-salt", icon: "salt", text: "পিঙ্ক অউরা সল্ট - উপহার" },
     {
       id: "tracker-30-days",
       icon: "calendar",
