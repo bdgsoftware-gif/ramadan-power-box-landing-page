@@ -9,7 +9,6 @@ export default function HeroSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLDivElement | null>(null);
   const marqueeTween = useRef<gsap.core.Tween | null>(null);
-
   const isDragging = useRef(false);
   const startX = useRef(0);
   const currentX = useRef(0);
@@ -22,110 +21,166 @@ export default function HeroSection() {
   };
 
   useLayoutEffect(() => {
+    if (!sectionRef.current) return;
+
     const ctx = gsap.context(() => {
-      // Entrance Animation
       gsap.from("[data-hero-animate]", {
         opacity: 0,
-        y: 30,
-        stagger: 0.1,
-        duration: 0.8,
-        ease: "power3.out",
+        y: 24,
+        stagger: 0.12,
       });
-
-      // Infinite Marquee Logic
-      if (sliderRef.current) {
-        const el = sliderRef.current;
-        const totalWidth = el.scrollWidth / 2;
-
-        marqueeTween.current = gsap.to(el, {
-          x: -totalWidth,
-          duration: 30,
-          ease: "none",
-          repeat: -1,
-          modifiers: {
-            x: gsap.utils.unitize((x) => parseFloat(x) % totalWidth),
-          },
-        });
-      }
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
 
-  const onPointerDown = (e: React.PointerEvent) => {
+  useLayoutEffect(() => {
+    if (!sliderRef.current) return;
+    const el = sliderRef.current;
+    const totalWidth = el.scrollWidth / 2;
+
+    // Create infinite loop marquee
+    marqueeTween.current = gsap.to(el, {
+      x: -totalWidth,
+      duration: 25, // Slower, smoother scroll
+      ease: "none",
+      repeat: -1,
+      modifiers: {
+        x: gsap.utils.unitize((x) => parseFloat(x) % totalWidth),
+      },
+    });
+
+    return () => {
+      marqueeTween.current?.kill();
+    };
+  }, []);
+
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!sliderRef.current) return;
+
     isDragging.current = true;
     startX.current = e.clientX;
     currentX.current = e.clientX;
-    velocity.current = 0; // Reset velocity on new touch
-    lastX.current = gsap.getProperty(sliderRef.current, "x") as number;
+    lastX.current = (gsap.getProperty(sliderRef.current, "x") as number) || 0;
+    velocity.current = 0;
+
+    // Pause auto-slide
     marqueeTween.current?.pause();
-    if (sliderRef.current) sliderRef.current.style.cursor = "grabbing";
+
+    // Add cursor feedback
+    sliderRef.current.style.cursor = "grabbing";
   };
 
-  const onPointerMove = (e: React.PointerEvent) => {
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!isDragging.current || !sliderRef.current) return;
+
+    e.preventDefault();
+
     const delta = e.clientX - startX.current;
     velocity.current = e.clientX - currentX.current;
     currentX.current = e.clientX;
+
     gsap.set(sliderRef.current, { x: lastX.current + delta });
   };
 
   const onPointerUp = () => {
-    if (!isDragging.current) return;
+    if (!isDragging.current || !sliderRef.current) return;
+
     isDragging.current = false;
-    if (sliderRef.current) {
-      sliderRef.current.style.cursor = "grab";
-      gsap.to(sliderRef.current, {
-        x: `+=${velocity.current * 10}`,
-        duration: 0.6,
-        ease: "power2.out",
-        onComplete: () => {
-          marqueeTween.current?.resume();
-        },
-      });
+
+    // Add momentum/inertia based on drag velocity
+    const el = sliderRef.current;
+    const currentPos = gsap.getProperty(el, "x") as number;
+    const momentumDistance = velocity.current * 10; // Adjust multiplier for more/less momentum
+
+    gsap.to(el, {
+      x: currentPos + momentumDistance,
+      duration: 0.8,
+      ease: "power2.out",
+      onComplete: () => {
+        // Resume auto-slide after momentum animation
+        marqueeTween.current?.resume();
+      },
+    });
+
+    // Reset cursor
+    el.style.cursor = "grab";
+  };
+
+  const onPointerEnter = () => {
+    // Pause on hover for desktop
+    if (window.innerWidth >= 640) {
+      marqueeTween.current?.pause();
+    }
+  };
+
+  const onPointerLeave = () => {
+    if (!isDragging.current) {
+      // Resume auto-slide when leaving
+      marqueeTween.current?.resume();
+      if (sliderRef.current) {
+        sliderRef.current.style.cursor = "grab";
+      }
     }
   };
 
   return (
-    <Section className="relative min-h-screen overflow-hidden bg-gradient-to-b from-[#FFFCF7] to-[#FFFAF1]">
-      <Container className="relative z-10" ref={sectionRef}>
-        {/* Logo Area */}
-        <div data-hero-animate className="mb-8 md:mb-12 flex justify-center">
-          <img
-            className="h-14 md:h-20 lg:h-24 object-contain"
-            src={heroData.brand}
-            alt="Logo"
-          />
-        </div>
+    <Section className="relative bg-gradient-to-b from-[#FFFCF7] to-[#FFFAF1] min-h-[80dvh]">
+      {/* FULL BACKGROUND Pattern - Desktop only */}
+      <div className="absolute inset-0 hidden md:flex items-center justify-center pointer-events-none opacity-40 w-full">
+        <img
+          src={heroData.heroBackground}
+          alt=""
+          className="h-full w-full object-cover"
+        />
+      </div>
 
-        {/* Main Content Grid */}
-        <div className="grid grid-cols-1 items-center gap-12 lg:gap-6">
-          {/* Image Side */}
-          <div
-            data-hero-animate
-            className="relative flex justify-center order-1"
-          >
-            <div className="relative w-full max-w-[320px] md:max-w-[500px] lg:max-w-full">
-              <img
-                src={heroData.productImg}
-                alt={heroData.title}
-                className="w-full h-auto drop-shadow-2xl object-contain rounded-2xl"
-              />
+      {/* FULL BACKGROUND Pattern - Mobile only */}
+      <div className="absolute inset-0 flex md:hidden items-center justify-center pointer-events-none opacity-20 h-full">
+        <img
+          src={heroData.mobileHeroBg}
+          alt=""
+          className="h-full w-full object-fill"
+        />
+      </div>
 
-              {/* Responsive Price Badge */}
-              <div className="absolute -top-16 -left-10 md:-top-20 md:left-10 lg:-left-10 rotate-[-10deg] w-36 md:w-48 lg:w-72">
-                <img
-                  src={heroData.priceBadge.src}
-                  alt="Offer"
-                  className="w-full h-auto drop-shadow-lg"
-                />
-              </div>
-            </div>
+      <Container className=" z-10 max-w-8xl mx-auto">
+        <div
+          ref={sectionRef}
+          className="relative flex items-start justify-center min-h-[80dvh]"
+        >
+          {/* Products Images */}
+          <div className="absolute lg:top-[38%] xl:top-1/3 xl:inset-0 2xl:top-1/4 2xl:inset-0 hidden md:flex items-center justify-center pointer-events-none">
+            <img
+              src={heroData.productImg}
+              alt=""
+              className="h-full w-auto md:max-w-[85%] lg:max-w-[80%] 2xl:max-w-[85%] object-contain"
+            />
           </div>
+          {/* TEXT BLOCK - Centered */}
+          <div className="mx-auto max-w-4xl text-center">
+            <div
+              data-hero-animate
+              className="mb-4 flex justify-center items-center"
+            >
+              <img className="h-20" src={heroData.brand} alt={heroData.title} />
+            </div>
 
-          {/* Text/Action Side */}
-          <div className="flex flex-col items-center text-center order-2">
-            <div data-hero-animate className="w-full sm:w-auto">
+            <h1
+              data-hero-animate
+              className="text-3xl font-bold font-ebGaramond text-green-800 sm:text-[56px]"
+            >
+              {heroData.title}
+            </h1>
+
+            <p
+              data-hero-animate
+              className="mt-6 font-anekBangla text-base leading-relaxed whitespace-pre-line text-text-secondary"
+            >
+              {heroData.description}
+            </p>
+
+            <div data-hero-animate className="mt-6">
               <Button onClick={handleCTA} variant="premium">
                 <svg
                   className="w-8 h-8"
@@ -156,45 +211,59 @@ export default function HeroSection() {
                   {heroData.cta.label}
                 </span>
               </Button>
-
-              <p className="mt-4 text-sm text-gray-500 font-anekBangla italic">
-                {heroData.promotion}
-              </p>
             </div>
+
+            <p
+              data-hero-animate
+              className="mt-4 text-sm font-anekBangla leading-relaxed whitespace-pre-line text-text-secondary"
+            >
+              {heroData.promotion}
+            </p>
+          </div>
+
+          {/* PRICE BADGE */}
+          <div
+            data-hero-animate
+            className="absolute lg:left-2 lg:top-0 xl:left-12 xl:top-0 2xl:left-4 2xl:top-6 hidden rotate-[-12deg] sm:block"
+          >
+            <img
+              className="lg:h-44 xl:h-56"
+              src={heroData.priceBadge.src}
+              alt=""
+            />
           </div>
         </div>
       </Container>
 
-      {/* Marquee Slider */}
-      <div
-        className="mt-16 relative w-full overflow-hidden py-6 border-y border-white/20 bg-white/10 backdrop-blur-md"
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={onPointerUp}
-        onPointerLeave={onPointerUp}
-        style={{ touchAction: "none" }}
-      >
+      {/* MOBILE SLIDER */}
+      <div className="mt-0 z-10 sm:hidden overflow-hidden">
         <div
           ref={sliderRef}
-          className="flex whitespace-nowrap cursor-grab items-center"
+          className="flex w-max gap-4 px-4 cursor-grab active:cursor-grabbing"
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerLeave={onPointerLeave}
+          onPointerEnter={onPointerEnter}
+          style={{ touchAction: "pan-y" }} // Allow vertical scroll, prevent horizontal
         >
-          {[...heroData.products, ...heroData.products].map(
-            (product, index) => (
-              <div
-                key={index}
-                className="inline-flex flex-col items-center mx-8 md:mx-14 min-w-[140px]"
-              >
-                <img
-                  src={product.image}
-                  alt={product.badge}
-                  className="h-20 md:h-28 lg:h-36 object-contain mb-3 pointer-events-none select-none"
-                />
-                <span className="text-sm md:text-base font-anekBangla text-center whitespace-pre-line leading-tight font-semibold text-gray-800">
-                  {product.badge}
-                </span>
-              </div>
-            ),
-          )}
+          {[...heroData.products, ...heroData.products].map((item, index) => (
+            <div
+              key={`${item.id}-${index}`}
+              className="min-w-[150px] flex-shrink-0 text-center"
+            >
+              <span className="mb-2 inline-block rounded-full border border-white/40 bg-white/30 px-3 py-1 text-sm font-bold uppercase tracking-wider text-green-900 backdrop-blur-md shadow-sm">
+                {item.badge}
+              </span>
+
+              <img
+                src={item.image}
+                alt={item.badge}
+                className="mx-auto h-52 w-auto object-contain drop-shadow-md pointer-events-none"
+                draggable="false"
+              />
+            </div>
+          ))}
         </div>
       </div>
     </Section>
