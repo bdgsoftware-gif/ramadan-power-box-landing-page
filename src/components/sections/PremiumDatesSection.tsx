@@ -216,7 +216,14 @@ export default function PremiumDatesSection() {
             {premiumDatesData.dates.map((item, index) => (
               <div
                 key={item.id}
-                ref={(el) => (imageRefs.current[index] = el)}
+ref={(el) => {
+  imageRefs.current[index] = el;
+}}
+
+   
+
+
+
                 className={`cursor-pointer text-center ${
                   item.position === "center"
                     ? "sm:order-2 sm:scale-110"
