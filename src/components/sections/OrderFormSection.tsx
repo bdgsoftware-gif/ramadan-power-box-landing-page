@@ -6,10 +6,8 @@ import Button from "../ui/Button";
 import { orderFormData } from "../../data/orderForm.data";
 
 // API Constants
-
-// const BASE_URL = 'http://localhost:9100/';
 // const ITEM_UID = "djFD0V6AWU4JwmJT_-xeVppYTtfcC_Lt3m5-7JvCqP4";
-
+// const BASE_URL = 'http://localhost:9100/';
 
 const BASE_URL = "https://bionic.garden/";
 const ITEM_UID = "djHZa6_KptwK_aIlorfty1jIPgBYJZnQAZkIEJXfnkU";
@@ -256,6 +254,12 @@ export default function OrderFormSection() {
     });
   };
 
+  const handleCloseModal = () => {
+    setOrderRequestStatus("");
+    setSuccessMessage("");
+    window.location.href = "https://bionic.garden/ramadan-power-box/";
+  };
+
   // Calculate totals from API data
   const subtotal = cart.sub_total || 0;
   const total = cart.payable_amount || 0;
@@ -422,7 +426,10 @@ export default function OrderFormSection() {
               </div>
             </div>
             {/* Close Button */}
-            <button className="mt-8 w-full rounded-xl bg-gradient-to-r from-[#129369] to-[#1B634C] px-6 py-3.5 sm:py-4 font-anekBangla text-base sm:text-lg font-semibold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
+            <button
+              onClick={handleCloseModal}
+              className="mt-8 w-full rounded-xl bg-gradient-to-r from-[#129369] to-[#1B634C] px-6 py-3.5 sm:py-4 font-anekBangla text-base sm:text-lg font-semibold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+            >
               বন্ধ করুন
             </button>
           </div>
