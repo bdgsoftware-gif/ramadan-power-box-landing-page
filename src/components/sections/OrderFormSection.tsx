@@ -422,7 +422,7 @@ export default function OrderFormSection() {
               </div>
             </div>
             {/* Close Button */}
-            <button className="mt-8 w-full rounded-xl bg-gradient-to-r from-[#129369] to-[#1B634C] px-6 py-3.5 sm:py-4 font-anekBangla text-base sm:text-lg font-semibold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
+            <button className="mt-8 w-full  rounded-xl bg-gradient-to-r from-[#129369] to-[#1B634C] px-6 py-3.5 sm:py-4 font-anekBangla text-base sm:text-lg font-semibold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
               বন্ধ করুন
             </button>
           </div>
