@@ -2,7 +2,7 @@ export const heroData = {
   brand: "/src/assets/images/bionic-logo.png",
   heroBackground: "/src/assets/images/hero-bg-abs.png",
   title: "Ramadan Power Box",
-  productImg: "/src/assets/images/hero-bg.png",
+  productImg: "/src/assets/images/hero-img.jpg",
   mobileHeroBg: "/src/assets/images/mobile-hero-bg.png",
   description:
     "রমজান বছরে একবার আসে, এবার যেন দুর্বলতা, অগোছালো প্রস্তুতি আর শেষ মুহূর্তের টেনশনে আপনার ইবাদত নষ্ট না হয়।\nরমজানে শক্তি • পরিবারে শান্তি • ইবাদতে গভীর ফোকাস",
@@ -66,11 +66,11 @@ export const heroData = {
       badge: "২০ দিনের ২০ হাদিস\nফ্রি কোর্স এক্সেস কার্ড",
       desktop: { top: "52%", right: "8%" },
     },
-    {
-      id: "dates-premium",
-      image: "/src/assets/images/ramadan-power-pack.png",
-      badge: "রমাদান পাওয়ার বক্স",
-      desktop: { bottom: "8%", left: "50%", translateX: "-50%" },
-    },
+    // {
+    //   id: "dates-premium",
+    //   image: "/src/assets/images/ramadan-power-pack.png",
+    //   badge: "রমাদান পাওয়ার বক্স",
+    //   desktop: { bottom: "8%", left: "50%", translateX: "-50%" },
+    // },
   ],
 };
